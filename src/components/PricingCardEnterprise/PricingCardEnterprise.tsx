@@ -45,13 +45,13 @@ export function PricingCardEnterprise({
         </Button>
       </div>
 
-      <div className="flex flex-col gap-3 pt-1">
+      <div className="flex flex-col gap-4 pt-1">
         {features.map((feat, i) => (
           <div
             key={i}
-            className="flex items-start gap-2 text-sm leading-normal tracking-[0.01em] text-ink/75"
+            className="flex items-center gap-3 text-sm leading-normal tracking-[0.01em] text-ink/75"
           >
-            <span className="inline-flex shrink-0 pt-[3px] text-green">
+            <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-coral-soft text-ink">
               <CheckIcon />
             </span>
             <span>{feat}</span>
