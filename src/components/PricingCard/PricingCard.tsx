@@ -146,13 +146,13 @@ export function PricingCard({
   return (
     <article
       className={cn(
-        "relative flex w-full flex-col gap-8 rounded-2xl bg-white px-6 pb-6 pt-10 font-sans text-base leading-normal text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)] transition-opacity",
+        "relative flex w-full flex-col gap-8 overflow-hidden rounded-2xl bg-white px-6 pb-6 pt-10 font-sans text-base leading-normal text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)] transition-opacity",
         isDisabled && "pointer-events-none opacity-35"
       )}
     >
       {/* Tag strip */}
       {showTag && (
-        <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center gap-2 rounded-t-2xl bg-fog">
+        <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center gap-2 bg-fog">
           <span className="size-1.5 shrink-0 rounded-full bg-coral" />
           <span className="text-[13px] font-medium leading-none text-ink">{tagText}</span>
         </div>
