@@ -1,52 +1,65 @@
+import { declareComponent } from "@webflow/react";
+import { props } from "@webflow/data-types";
 import { PricingPlans } from "./PricingPlans";
 import { DEFAULT_PLANS } from "./plans";
 
-const PricingPlansWebflow = declareComponent(PricingPlans, {
+export default declareComponent(PricingPlans, {
   name: "PricingPlans",
   description:
     "Dynamic pricing section: billing + AI toggles drive the four plan cards. SSR renders the default state for crawlers; plan data is editable as JSON. Emits schema.org Product/Offer JSON-LD.",
   group: "Pricing",
   props: {
-    plansJson: attribute.text("Plans JSON", {
-      defaultValue: JSON.stringify(DEFAULT_PLANS, null, 2),
+    plansJson: props.Text({
+      name: "Plans JSON",
+      defaultValue: JSON.stringify(DEFAULT_PLANS),
     }),
-    defaultBilling: attribute.enum("Default billing", {
+    defaultBilling: props.Variant({
+      name: "Default billing",
       options: ["monthly", "annual"],
       defaultValue: "annual",
     }),
-    defaultAiOn: attribute.boolean("AI Agent on by default", {
+    defaultAiOn: props.Boolean({
+      name: "AI Agent on by default",
       defaultValue: true,
     }),
-    monthlyLabel: attribute.text("Monthly label", { defaultValue: "Monthly" }),
-    annualLabel: attribute.text("Annual label", { defaultValue: "Annual" }),
-    aiToggleLabel: attribute.text("AI toggle label", {
+    monthlyLabel: props.Text({ name: "Monthly label", defaultValue: "Monthly" }),
+    annualLabel: props.Text({ name: "Annual label", defaultValue: "Annual" }),
+    aiToggleLabel: props.Text({
+      name: "AI toggle label",
       defaultValue: "Include AI Agent",
     }),
-    showEnterprise: attribute.boolean("Show enterprise card", {
+    showEnterprise: props.Boolean({
+      name: "Show enterprise card",
       defaultValue: true,
     }),
-    enterpriseTitle: attribute.text("Enterprise title", {
+    enterpriseTitle: props.Text({
+      name: "Enterprise title",
       defaultValue: "Need a fully custom plan?",
     }),
-    enterpriseDescription: attribute.text("Enterprise description", {
+    enterpriseDescription: props.Text({
+      name: "Enterprise description",
       defaultValue:
         "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
     }),
-    enterpriseCtaLabel: attribute.text("Enterprise CTA label", {
+    enterpriseCtaLabel: props.Text({
+      name: "Enterprise CTA label",
       defaultValue: "Talk to Sales",
     }),
-    enterpriseCtaHref: attribute.text("Enterprise CTA href", {
+    enterpriseCtaHref: props.Text({
+      name: "Enterprise CTA href",
       defaultValue: "#",
     }),
-    emitJsonLd: attribute.boolean("Emit JSON-LD", { defaultValue: true }),
-    productName: attribute.text("Product name (SEO)", {
+    emitJsonLd: props.Boolean({ name: "Emit JSON-LD", defaultValue: true }),
+    productName: props.Text({
+      name: "Product name (SEO)",
       defaultValue: "Gorgias",
     }),
-    productUrl: attribute.text("Product URL (SEO)", {
+    productUrl: props.Text({
+      name: "Product URL (SEO)",
       defaultValue: "https://www.gorgias.com/pricing",
     }),
   },
-  ssr: true,
+  options: {
+    ssr: true,
+  },
 });
-
-export default PricingPlansWebflow;

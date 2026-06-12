@@ -1,15 +1,16 @@
+import { declareComponent } from "@webflow/react";
+import { props } from "@webflow/data-types";
 import { AiAgentToggle } from "./AiAgentToggle";
 
-const AiAgentToggleWebflow = declareComponent(AiAgentToggle, {
+export default declareComponent(AiAgentToggle, {
   name: "AiAgentToggle",
-  description: "AI Agent on/off toggle. Wire onChange to pricing cards via Webflow interactions.",
+  description: "Include AI Agent on/off switch.",
   group: "Pricing",
   props: {
-    defaultOn: attribute.boolean("Default on", { defaultValue: true }),
-    label: attribute.text("Label", { defaultValue: "AI Agent" }),
-    sublabel: attribute.text("Sublabel", { defaultValue: "Add AI automation to your plan" }),
+    defaultOn: props.Boolean({ name: "Default on", defaultValue: true }),
+    label: props.Text({ name: "Label", defaultValue: "Include AI Agent" }),
   },
-  ssr: false,
+  options: {
+    ssr: false,
+  },
 });
-
-export default AiAgentToggleWebflow;

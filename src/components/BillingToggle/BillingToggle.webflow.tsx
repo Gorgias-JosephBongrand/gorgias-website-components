@@ -1,19 +1,21 @@
+import { declareComponent } from "@webflow/react";
+import { props } from "@webflow/data-types";
 import { BillingToggle } from "./BillingToggle";
 
-const BillingToggleWebflow = declareComponent(BillingToggle, {
+export default declareComponent(BillingToggle, {
   name: "BillingToggle",
-  description: "Monthly / Yearly billing segmented control. Wire onChange to pricing cards via Webflow interactions.",
+  description: "Monthly / Annual billing segmented control.",
   group: "Pricing",
   props: {
-    defaultValue: attribute.enum("Default", {
+    defaultValue: props.Variant({
+      name: "Default",
       options: ["monthly", "annual"],
       defaultValue: "annual",
     }),
-    monthlyLabel: attribute.text("Monthly label", { defaultValue: "Monthly" }),
-    annualLabel: attribute.text("Annual label", { defaultValue: "Yearly" }),
-    savingsBadge: attribute.text("Savings badge", { defaultValue: "Save 17%" }),
+    monthlyLabel: props.Text({ name: "Monthly label", defaultValue: "Monthly" }),
+    annualLabel: props.Text({ name: "Annual label", defaultValue: "Annual" }),
   },
-  ssr: false,
+  options: {
+    ssr: false,
+  },
 });
-
-export default BillingToggleWebflow;

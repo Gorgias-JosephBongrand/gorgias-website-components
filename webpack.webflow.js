@@ -1,11 +1,11 @@
 const path = require("path");
 
-/** @param {import('webpack').Configuration} config */
-module.exports = (config) => {
-  config.resolve.alias = {
-    ...config.resolve.alias,
-    // Required for shadcn/ui imports like "@/lib/utils"
-    "@": process.cwd(),
-  };
-  return config;
+// Merged into the Webflow CLI bundler config (webflow.json → library.bundleConfig).
+// "@" alias is required for shadcn/ui imports like "@/lib/utils".
+module.exports = {
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname),
+    },
+  },
 };

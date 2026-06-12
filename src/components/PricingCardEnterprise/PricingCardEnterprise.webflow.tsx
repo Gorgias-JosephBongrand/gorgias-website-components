@@ -1,30 +1,36 @@
+import { declareComponent } from "@webflow/react";
+import { props } from "@webflow/data-types";
 import { PricingCardEnterprise } from "./PricingCardEnterprise";
 
-const DEFAULT_FEATURES_STR = [
+const DEFAULT_FEATURES = [
   "SSO (SAML), audit logs, SCIM provisioning",
   "Unlimited Help Centers, API 4 req/sec",
   "Custom DPA/MSA + security review support",
   "Dedicated CSM + solutions architect",
   "New Actions / deeper integrations & custom automations",
   "Knowledge-gap and knowledge-conflict opportunities",
-];
+].join("\n");
 
-const PricingCardEnterpriseWebflow = declareComponent(PricingCardEnterprise, {
+export default declareComponent(PricingCardEnterprise, {
   name: "PricingCardEnterprise",
-  description: "Full-width 2-column enterprise card with feature list. Not a plan card — separate CTA section.",
+  description:
+    "Full-width 2-column enterprise card with feature list. Not a plan card — separate CTA section.",
   group: "Pricing",
   props: {
-    eyebrow: attribute.text("Eyebrow", { defaultValue: "Enterprise" }),
-    title: attribute.text("Title", { defaultValue: "Need a fully custom plan?" }),
-    description: attribute.text("Description", {
+    title: props.Text({ name: "Title", defaultValue: "Need a fully custom plan?" }),
+    description: props.Text({
+      name: "Description",
       defaultValue:
-        "Get a tailored package with dedicated support, custom integrations, and enterprise-grade security built around your team.",
+        "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
     }),
-    ctaLabel: attribute.text("CTA label", { defaultValue: "Talk to Sales" }),
-    ctaHref: attribute.text("CTA href", { defaultValue: "#" }),
-    features: attribute.json("Features", { defaultValue: DEFAULT_FEATURES_STR }),
+    ctaLabel: props.Text({ name: "CTA label", defaultValue: "Talk to Sales" }),
+    ctaHref: props.Text({ name: "CTA href", defaultValue: "#" }),
+    features: props.Text({
+      name: "Features (one per line)",
+      defaultValue: DEFAULT_FEATURES,
+    }),
   },
-  ssr: true,
+  options: {
+    ssr: true,
+  },
 });
-
-export default PricingCardEnterpriseWebflow;

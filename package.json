@@ -13,11 +13,13 @@
     "@tailwindcss/postcss": "^4.1.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "@webflow/cli": "latest",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.0",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "@webflow/webflow-cli": "^2.1.0",
+    "@webflow/react": "^2.0.0",
+    "@webflow/data-types": "^2.0.0"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",

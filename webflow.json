@@ -1,10 +1,20 @@
 {
   "schemaVersion": "1.0.0",
   "library": {
-    "components": "src/components",
-    "globals": "src/globals.ts"
+    "name": "Gorgias Design System",
+    "components": [
+      "./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"
+    ],
+    "globals": "./src/globals.ts",
+    "bundleConfig": "./webpack.webflow.js",
+    "description": "Gorgias marketing site components \u2014 pricing cards, toggles, and dynamic pricing section",
+    "id": "gorgias-design-system"
   },
-  "devlink": {
-    "outputPath": "devlink"
+  "telemetry": {
+    "global": {
+      "allowTelemetry": true,
+      "lastPrompted": 1781266314637,
+      "version": "2.1.0"
+    }
   }
 }

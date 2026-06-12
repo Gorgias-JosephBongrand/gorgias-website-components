@@ -1,7 +1,9 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 @import "./tokens/brand.css";
 
-/* Scan shadcn primitives outside src/ */
+/* Explicit sources only — auto-detection disabled so the Webflow
+   bundler never walks node_modules/.next while snapshotting. */
+@source "./**/*.tsx";
 @source "../components/**/*.tsx";
 @source "../lib/**/*.ts";
 

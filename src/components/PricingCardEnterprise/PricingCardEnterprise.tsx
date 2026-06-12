@@ -15,7 +15,8 @@ export interface PricingCardEnterpriseProps {
   description?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  features?: string[];
+  /** Array, or newline-separated string (Webflow text prop) */
+  features?: string[] | string;
 }
 
 function CheckIcon() {
@@ -33,6 +34,10 @@ export function PricingCardEnterprise({
   ctaHref = "#",
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {
+  const featureList =
+    typeof features === "string"
+      ? features.split("\n").map((f) => f.trim()).filter(Boolean)
+      : features;
   return (
     <article className="grid w-full grid-cols-2 gap-12 rounded-2xl bg-white p-6 font-sans text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)]">
       <div className="flex flex-col items-start justify-between gap-6">
@@ -46,7 +51,7 @@ export function PricingCardEnterprise({
       </div>
 
       <div className="flex flex-col gap-4 pt-1">
-        {features.map((feat, i) => (
+        {featureList.map((feat, i) => (
           <div
             key={i}
             className="flex items-center gap-3 text-sm leading-normal tracking-[0.01em] text-ink/75"
