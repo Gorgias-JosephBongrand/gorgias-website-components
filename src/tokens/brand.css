@@ -38,5 +38,6 @@
   --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
   /* ─── Radius ───────────────────────────────────────────────── */
-  --radius: 0.5rem; /* 8px — buttons; cards use rounded-2xl (16px) */
+  --radius: 0.5rem; /* 8px — buttons */
+  --radius-2xl: 1rem; /* 16px — cards + tag strip (Figma Radius-Basic) */
 }
