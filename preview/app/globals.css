@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "../../src/tokens/brand.css";
 
+/* Tell Tailwind v4 to scan component files outside the Next.js root */
+@source "../../src/**/*.tsx";
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
