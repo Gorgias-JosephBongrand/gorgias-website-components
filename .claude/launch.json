@@ -5,7 +5,8 @@
       "name": "preview",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "cwd": "/Users/josephbongrand/gorgias-design-system/preview",
+      "port": 3001
     }
   ]
 }
