@@ -1,5 +1,6 @@
 import { PricingPlans } from "../../src/components/PricingPlans/PricingPlans";
 import { AddonCard } from "../../src/components/AddonCard/AddonCard";
+import { CompareTable } from "../../src/components/CompareTable/CompareTable";
 
 export default function PreviewPage() {
   return (
@@ -23,6 +24,13 @@ export default function PreviewPage() {
       >
         <AddonCard kind="voice" />
         <AddonCard kind="sms" />
+      </div>
+
+      <h2 style={{ textAlign: "center", margin: "64px 0 40px", fontSize: 20, fontWeight: 600, color: "#1a1e23" }}>
+        Compare Plans
+      </h2>
+      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+        <CompareTable />
       </div>
     </main>
   );
