@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "../../src/tokens/brand.css";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-sans);
+  color: var(--color-neutral-900);
+  background: var(--color-neutral-50);
+  -webkit-font-smoothing: antialiased;
+}

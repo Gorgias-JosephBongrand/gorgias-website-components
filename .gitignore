@@ -1,0 +1,14 @@
+node_modules/
+dist/
+devlink/
+.webflow/
+*.local
+
+# Preview app
+preview/.next/
+preview/node_modules/
+
+# Env
+.env
+.env.*
+!.env.example

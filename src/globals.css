@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "./tokens/brand.css";
+
+/*
+ * Global styles injected into every code component's shadow root via globals.ts.
+ * Keep this minimal — component-scoped styles live in the component files.
+ *
+ * SHADOW DOM NOTE: site Webflow classes do NOT cross the shadow boundary.
+ * Brand tokens are referenced via var(--color-brand-*) which DO cross it.
+ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  color: var(--color-neutral-900);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
