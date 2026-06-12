@@ -9,15 +9,13 @@ export interface BillingToggleProps {
   defaultValue?: BillingCycle;
   monthlyLabel?: string;
   annualLabel?: string;
-  savingsBadge?: string;
   onChange?: (value: BillingCycle) => void;
 }
 
 export function BillingToggle({
   defaultValue = "annual",
   monthlyLabel = "Monthly",
-  annualLabel = "Yearly",
-  savingsBadge = "Save 17%",
+  annualLabel = "Annual",
   onChange,
 }: BillingToggleProps) {
   const [value, setValue] = useState<BillingCycle>(defaultValue);
@@ -28,26 +26,23 @@ export function BillingToggle({
   };
 
   return (
-    <div className={styles.root}>
-      <div className={styles.track} role="group" aria-label="Billing cycle">
-        <button
-          type="button"
-          className={`${styles.option}${value === "monthly" ? ` ${styles.active}` : ""}`}
-          aria-pressed={value === "monthly"}
-          onClick={() => select("monthly")}
-        >
-          {monthlyLabel}
-        </button>
-        <button
-          type="button"
-          className={`${styles.option}${value === "annual" ? ` ${styles.active}` : ""}`}
-          aria-pressed={value === "annual"}
-          onClick={() => select("annual")}
-        >
-          {annualLabel}
-          {savingsBadge && <span className={styles.badge}>{savingsBadge}</span>}
-        </button>
-      </div>
+    <div className={styles.root} role="group" aria-label="Billing cycle">
+      <button
+        type="button"
+        className={`${styles.option}${value === "monthly" ? ` ${styles.active}` : ""}`}
+        aria-pressed={value === "monthly"}
+        onClick={() => select("monthly")}
+      >
+        {monthlyLabel}
+      </button>
+      <button
+        type="button"
+        className={`${styles.option}${value === "annual" ? ` ${styles.active}` : ""}`}
+        aria-pressed={value === "annual"}
+        onClick={() => select("annual")}
+      >
+        {annualLabel}
+      </button>
     </div>
   );
 }

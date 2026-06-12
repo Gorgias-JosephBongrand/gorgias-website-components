@@ -155,7 +155,7 @@ export function PricingSection() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 32,
+          gap: 24,
           marginBottom: 40,
           flexWrap: "wrap",
         }}

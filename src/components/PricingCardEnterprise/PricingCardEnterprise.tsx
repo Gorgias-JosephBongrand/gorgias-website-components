@@ -11,51 +11,47 @@ const DEFAULT_FEATURES = [
 ];
 
 export interface PricingCardEnterpriseProps {
-  eyebrow?: string;
   title?: string;
   description?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  /** Newline-separated feature strings, or pass as an array prop via webflow.tsx */
   features?: string[];
 }
 
 function CheckIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-      <path d="M11.5 3.5L5.25 9.75L2.5 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+      <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 export function PricingCardEnterprise({
-  eyebrow = "Enterprise",
   title = "Need a fully custom plan?",
-  description = "Get a tailored package with dedicated support, custom integrations, and enterprise-grade security built around your team.",
+  description = "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
   ctaLabel = "Talk to Sales",
   ctaHref = "#",
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {
   return (
     <article className={styles.card}>
-      {/* Left: heading + description + CTA */}
       <div className={styles.left}>
-        {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}
-        <h3 className={styles.title}>{title}</h3>
-        <p className={styles.description}>{description}</p>
+        <div className={styles.textBlock}>
+          <h3 className={styles.title}>{title}</h3>
+          <p className={styles.description}>{description}</p>
+        </div>
         <a href={ctaHref} className={styles.btn}>
           {ctaLabel}
         </a>
       </div>
 
-      {/* Right: feature list */}
       <div className={styles.right}>
         {features.map((feat, i) => (
           <div key={i} className={styles.featureItem}>
             <span className={styles.checkIcon}>
               <CheckIcon />
             </span>
-            <span className={styles.featureText}>{feat}</span>
+            <span>{feat}</span>
           </div>
         ))}
       </div>

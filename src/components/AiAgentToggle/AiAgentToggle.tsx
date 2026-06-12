@@ -6,14 +6,12 @@ import styles from "./AiAgentToggle.module.css";
 export interface AiAgentToggleProps {
   defaultOn?: boolean;
   label?: string;
-  sublabel?: string;
   onChange?: (on: boolean) => void;
 }
 
 export function AiAgentToggle({
   defaultOn = true,
-  label = "AI Agent",
-  sublabel = "Add AI automation to your plan",
+  label = "Include AI Agent",
   onChange,
 }: AiAgentToggleProps) {
   const [on, setOn] = useState(defaultOn);
@@ -25,11 +23,8 @@ export function AiAgentToggle({
   };
 
   return (
-    <label className={styles.root} onClick={toggle}>
-      <div className={styles.label}>
-        <span className={styles.labelMain}>{label}</span>
-        {sublabel && <span className={styles.labelSub}>{sublabel}</span>}
-      </div>
+    <div className={styles.root} onClick={toggle}>
+      <span className={styles.label}>{label}</span>
       <button
         type="button"
         role="switch"
@@ -40,6 +35,6 @@ export function AiAgentToggle({
       >
         <span className={styles.thumb} />
       </button>
-    </label>
+    </div>
   );
 }
