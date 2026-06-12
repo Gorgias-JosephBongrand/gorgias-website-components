@@ -1,36 +1,42 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PricingCard.module.css";
 
 export type PricingCardState = "default" | "featured" | "disabled";
+export type PricingCardCtaVariant = "dark" | "ghost";
 
 export interface PricingCardProps {
-  // Card state
+  /** Controls opacity/pointer-events (disabled) and tag strip content (featured) */
   state?: PricingCardState;
-
-  // Top labels
-  topBannerText?: string;   // e.g. "Most popular · 12,600 brands" (featured only)
-  topNoteText?: string;     // e.g. "Monthly billing only" (disabled only)
+  /** Tag strip text — shown for both "featured" and "disabled" states */
+  tagText?: string;
 
   // Plan identity
   planName?: string;
-  description?: string;
+  /** Audience / description line under the name */
+  audience?: string;
 
-  // Pricing
-  originalPrice?: string;   // e.g. "$69" — shown with strikethrough; omit to hide
-  currentPrice?: string;    // e.g. "$57"
-  pricePeriod?: string;     // e.g. "/mo"
-  annualNote?: string;      // e.g. "$684 billed annually"
+  // Pricing — pass pre-formatted strings (e.g. "$345", "$414")
+  /** Strikethrough price. Leave empty to hide. */
+  originalPrice?: string;
+  currentPrice?: string;
+  pricePeriod?: string;
+  /** e.g. "$4,140 billed annually" or "Billed monthly · cancel anytime" */
+  billingNote?: string;
 
-  // Features
-  ticketCount?: string;     // e.g. "300 tickets / month"
-  helpdeskPrice?: string;   // e.g. "$50/mo"
-  aiAgentPrice?: string;    // e.g. "$7/mo" — if empty, shows "$0.90 / interaction" style
-  aiAgentNote?: string;     // e.g. "~45 automated interactions · at $0.90 per interaction"
-  showAiAgentInfoIcon?: boolean;
+  // Feature rows — all text, set per billing/AI state from the Designer or MCP
+  ticketLabel?: string;
+  helpdeskPrice?: string;
+  /** e.g. "$45/mo" (with base) or "$1.00 / interaction" (Starter/pay-per-use) */
+  aiAgentDisplayValue?: string;
+  /** Sub-note under AI Agent row */
+  aiAgentNote?: string;
+  /** Tooltip body shown on the (i) info dot. Leave empty to hide the dot. */
+  aiAgentTooltip?: string;
 
   // CTA
+  ctaVariant?: PricingCardCtaVariant;
   ctaLabel?: string;
   ctaHref?: string;
   ctaTrackingId?: string;
@@ -42,151 +48,159 @@ export interface PricingCardProps {
 
 function CheckIcon() {
   return (
-    <svg
-      className={styles.checkIcon}
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M3 8l3.5 3.5L13 4.5"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+      <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  );
+}
+
+function InfoDot({ tooltip }: { tooltip: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span
+      className={styles.infoDotWrap}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        aria-label="More info"
+        className={styles.infoDot}
+        onClick={(e) => { e.preventDefault(); setOpen((o) => !o); }}
+      >
+        i
+      </button>
+      {open && (
+        <span role="tooltip" className={styles.tooltip}>
+          {tooltip}
+          <span className={styles.tooltipArrow} />
+        </span>
+      )}
+    </span>
   );
 }
 
 export function PricingCard({
   state = "default",
-  topBannerText = "Most popular · 12,600 brands",
-  topNoteText = "Monthly billing only",
+  tagText,
   planName = "Basic",
-  description = "For growing stores handling up to 300 tickets/month",
+  audience = "For growing stores handling up to 300 tickets/month",
   originalPrice = "$69",
   currentPrice = "$57",
   pricePeriod = "/mo",
-  annualNote = "$684 billed annually",
-  ticketCount = "300 tickets / month",
+  billingNote = "$684 billed annually",
+  ticketLabel = "300 tickets / month",
   helpdeskPrice = "$50/mo",
-  aiAgentPrice = "$7/mo",
+  aiAgentDisplayValue = "$7/mo",
   aiAgentNote = "~45 automated interactions · at $0.90 per interaction",
-  showAiAgentInfoIcon = true,
+  aiAgentTooltip = "A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours.",
+  ctaVariant = "dark",
   ctaLabel = "Start free trial",
   ctaHref = "#",
   ctaTrackingId,
   compareLinkLabel = "Compare all features ↓",
-  compareLinkHref = "#",
+  compareLinkHref = "#compare",
 }: PricingCardProps) {
-  const isFeatured = state === "featured";
   const isDisabled = state === "disabled";
+  const isFeatured = state === "featured";
+  const showTag = !!tagText && (isFeatured || isDisabled);
 
-  const cardClass = [
-    styles.card,
-    isFeatured ? styles.featured : "",
-    isDisabled ? styles.disabled : "",
-    isFeatured ? styles.hasBanner : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  const handleCtaClick = () => {
+  const handleCta = () => {
     const id = ctaTrackingId ?? `pricing-${planName?.toLowerCase().replace(/\s+/g, "-")}-cta`;
-    if (typeof window !== "undefined" && Array.isArray((window as any).dataLayer)) {
-      (window as any).dataLayer.push({ event: "cta_click", cta_id: id });
+    if (typeof window !== "undefined") {
+      ((window as unknown as { dataLayer?: unknown[] }).dataLayer ?? []);
+      const dl = (window as unknown as { dataLayer: unknown[] }).dataLayer;
+      if (Array.isArray(dl)) dl.push({ event: "cta_click", cta_id: id });
     }
   };
 
   return (
-    <article className={cardClass}>
-      {/* Featured banner */}
-      {isFeatured && topBannerText && (
-        <div className={styles.topBanner}>{topBannerText}</div>
+    <article className={`${styles.card}${isDisabled ? ` ${styles.disabled}` : ""}`}>
+      {/* Tag strip */}
+      {showTag && (
+        <div className={styles.tagStrip}>
+          <span className={styles.tagDot} />
+          <span className={styles.tagText}>{tagText}</span>
+        </div>
       )}
 
-      {/* Disabled top note */}
-      {isDisabled && topNoteText && (
-        <p className={styles.topNote}>{topNoteText}</p>
-      )}
+      {/* Header: name + audience + price */}
+      <div className={styles.header}>
+        <div className={styles.nameBlock}>
+          <h3 className={styles.planName}>{planName}</h3>
+          <p className={styles.audience}>{audience}</p>
+        </div>
 
-      {/* Plan name + description */}
-      <h3 className={styles.planName}>{planName}</h3>
-      <p className={styles.description}>{description}</p>
-
-      {/* Price */}
-      <div className={styles.priceBlock}>
-        {originalPrice && (
-          <span className={styles.originalPrice}>{originalPrice}</span>
-        )}
-        <span className={styles.currentPrice}>{currentPrice}</span>
-        <span className={styles.pricePeriod}>{pricePeriod}</span>
+        <div className={styles.priceBlock}>
+          <div className={styles.priceRow}>
+            {originalPrice && (
+              <span className={styles.priceStrike}>{originalPrice}</span>
+            )}
+            <span className={styles.priceCurrent}>{currentPrice}</span>
+            <span className={styles.pricePeriod}>{pricePeriod}</span>
+          </div>
+          <p className={styles.billingNote}>{billingNote}</p>
+        </div>
       </div>
-      {annualNote && <p className={styles.annualNote}>{annualNote}</p>}
 
-      {/* Feature list */}
-      <p className={styles.featuresLabel}>Included</p>
-      <ul className={styles.featureList}>
-        {/* Tickets */}
-        <li className={styles.featureItem}>
-          <CheckIcon />
-          <div className={styles.featureContent}>
-            <span className={styles.featureName}>{ticketCount}</span>
+      {/* Included feature list */}
+      <div className={styles.features}>
+        <span className={styles.featuresLabel}>Included</span>
+        <div className={styles.featureRows}>
+          {/* Tickets */}
+          <div className={styles.planRow}>
+            <span className={styles.planRowLeft}>
+              <span className={styles.checkIcon}><CheckIcon /></span>
+              <span className={styles.rowLabelBold}>{ticketLabel}</span>
+            </span>
           </div>
-        </li>
 
-        {/* Helpdesk */}
-        <li className={styles.featureItem}>
-          <CheckIcon />
-          <div className={styles.featureContent}>
-            <span className={styles.featureNameNormal}>Helpdesk</span>
-            <span className={styles.featurePrice}>{helpdeskPrice}</span>
+          <div className={styles.divider} />
+
+          {/* Helpdesk */}
+          <div className={styles.planRow}>
+            <span className={styles.planRowLeft}>
+              <span className={styles.checkIcon}><CheckIcon /></span>
+              <span className={styles.rowLabel}>Helpdesk</span>
+            </span>
+            <span className={styles.rowValue}>{helpdeskPrice}</span>
           </div>
-        </li>
 
-        {/* AI Agent */}
-        <li className={styles.featureItem}>
-          <CheckIcon />
-          <div>
-            <div className={styles.featureContent}>
-              <span className={styles.featureNameNormal}>
-                AI Agent
-                {showAiAgentInfoIcon && (
-                  <i className={styles.infoIcon} title="Charged per resolved ticket">
-                    i
-                  </i>
-                )}
+          <div className={styles.divider} />
+
+          {/* AI Agent */}
+          <div className={styles.aiAgentGroup}>
+            <div className={styles.planRow}>
+              <span className={styles.planRowLeft}>
+                <span className={styles.checkIcon}><CheckIcon /></span>
+                <span className={styles.rowLabel}>AI Agent</span>
+                {aiAgentTooltip && <InfoDot tooltip={aiAgentTooltip} />}
               </span>
-              <span className={styles.featurePrice}>{aiAgentPrice}</span>
+              <span className={styles.rowValue}>{aiAgentDisplayValue}</span>
             </div>
             {aiAgentNote && (
-              <p className={styles.featureNote}>{aiAgentNote}</p>
+              <span className={styles.aiNote}>{aiAgentNote}</span>
             )}
           </div>
-        </li>
-      </ul>
-
-      <div className={styles.spacer} />
+        </div>
+      </div>
 
       {/* CTA */}
-      <a
-        href={isDisabled ? undefined : ctaHref}
-        className={`${styles.cta} ${isDisabled ? styles.ctaOutlined : styles.ctaFilled}`}
-        onClick={!isDisabled ? handleCtaClick : undefined}
-        aria-disabled={isDisabled}
-      >
-        {ctaLabel}
-      </a>
-
-      {/* Compare link */}
-      {compareLinkLabel && (
-        <a href={compareLinkHref} className={styles.compareLink}>
-          {compareLinkLabel}
+      <div className={styles.ctaArea}>
+        <a
+          href={isDisabled ? undefined : ctaHref}
+          className={`${styles.btn} ${ctaVariant === "ghost" ? styles.btnGhost : styles.btnDark}`}
+          onClick={!isDisabled ? handleCta : undefined}
+          aria-disabled={isDisabled}
+        >
+          {ctaLabel}
         </a>
-      )}
+        {compareLinkLabel && (
+          <a href={compareLinkHref} className={styles.compareLink}>
+            {compareLinkLabel}
+          </a>
+        )}
+      </div>
     </article>
   );
 }

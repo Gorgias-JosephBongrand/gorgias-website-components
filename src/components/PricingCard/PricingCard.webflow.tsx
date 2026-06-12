@@ -1,113 +1,58 @@
-// Filename is a stable identifier — do not rename after sharing to a Library.
-// Renaming creates a new component and breaks all existing canvas instances.
-
 import { PricingCard } from "./PricingCard";
-import "./PricingCard.module.css";
 
-declareComponent({
-  component: PricingCard,
-  displayName: "Pricing Card",
-  ssr: true,
+const PricingCardWebflow = declareComponent(PricingCard, {
+  name: "PricingCard",
+  description: "Pricing plan card with disabled/default/featured states, AI Agent row, info tooltip, and GTM tracking.",
+  group: "Pricing",
   props: {
-    state: attribute({
-      type: "Enum",
-      displayName: "State",
-      options: [
-        { value: "default", displayName: "Default" },
-        { value: "featured", displayName: "Featured (highlighted)" },
-        { value: "disabled", displayName: "Disabled (greyed out)" },
-      ],
+    state: attribute.enum("State", {
+      options: ["default", "featured", "disabled"],
       defaultValue: "default",
     }),
-    topBannerText: attribute({
-      type: "PlainText",
-      displayName: "Top banner text",
+    tagText: attribute.text("Tag text", {
       defaultValue: "Most popular · 12,600 brands",
     }),
-    topNoteText: attribute({
-      type: "PlainText",
-      displayName: "Top note text",
-      defaultValue: "Monthly billing only",
-    }),
-    planName: attribute({
-      type: "PlainText",
-      displayName: "Plan name",
-      defaultValue: "Basic",
-    }),
-    description: attribute({
-      type: "PlainText",
-      displayName: "Description",
+    planName: attribute.text("Plan name", { defaultValue: "Basic" }),
+    audience: attribute.text("Audience", {
       defaultValue: "For growing stores handling up to 300 tickets/month",
     }),
-    originalPrice: attribute({
-      type: "PlainText",
-      displayName: "Original price (strikethrough, leave empty to hide)",
-      defaultValue: "$69",
-    }),
-    currentPrice: attribute({
-      type: "PlainText",
-      displayName: "Current price",
-      defaultValue: "$57",
-    }),
-    pricePeriod: attribute({
-      type: "PlainText",
-      displayName: "Price period",
-      defaultValue: "/mo",
-    }),
-    annualNote: attribute({
-      type: "PlainText",
-      displayName: "Annual billing note",
+    originalPrice: attribute.text("Original price", { defaultValue: "$69" }),
+    currentPrice: attribute.text("Current price", { defaultValue: "$57" }),
+    pricePeriod: attribute.text("Price period", { defaultValue: "/mo" }),
+    billingNote: attribute.text("Billing note", {
       defaultValue: "$684 billed annually",
     }),
-    ticketCount: attribute({
-      type: "PlainText",
-      displayName: "Ticket count",
+    ticketLabel: attribute.text("Ticket label", {
       defaultValue: "300 tickets / month",
     }),
-    helpdeskPrice: attribute({
-      type: "PlainText",
-      displayName: "Helpdesk price",
+    helpdeskPrice: attribute.text("Helpdesk price", {
       defaultValue: "$50/mo",
     }),
-    aiAgentPrice: attribute({
-      type: "PlainText",
-      displayName: "AI Agent price",
+    aiAgentDisplayValue: attribute.text("AI Agent value", {
       defaultValue: "$7/mo",
     }),
-    aiAgentNote: attribute({
-      type: "PlainText",
-      displayName: "AI Agent sub-note",
+    aiAgentNote: attribute.text("AI Agent note", {
       defaultValue: "~45 automated interactions · at $0.90 per interaction",
     }),
-    showAiAgentInfoIcon: attribute({
-      type: "Boolean",
-      displayName: "Show AI Agent info icon",
-      defaultValue: true,
+    aiAgentTooltip: attribute.text("AI Agent tooltip", {
+      defaultValue:
+        "A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours.",
     }),
-    ctaLabel: attribute({
-      type: "PlainText",
-      displayName: "CTA label",
-      defaultValue: "Start free trial",
+    ctaVariant: attribute.enum("CTA variant", {
+      options: ["dark", "ghost"],
+      defaultValue: "dark",
     }),
-    ctaHref: attribute({
-      type: "PlainText",
-      displayName: "CTA URL",
-      defaultValue: "#",
-    }),
-    ctaTrackingId: attribute({
-      type: "PlainText",
-      displayName: "CTA tracking ID (dataLayer)",
-      defaultValue: "",
-    }),
-    compareLinkLabel: attribute({
-      type: "PlainText",
-      displayName: "Compare link label",
+    ctaLabel: attribute.text("CTA label", { defaultValue: "Start free trial" }),
+    ctaHref: attribute.text("CTA href", { defaultValue: "#" }),
+    ctaTrackingId: attribute.text("CTA tracking ID", { defaultValue: "" }),
+    compareLinkLabel: attribute.text("Compare link label", {
       defaultValue: "Compare all features ↓",
     }),
-    compareLinkHref: attribute({
-      type: "PlainText",
-      displayName: "Compare link URL",
-      defaultValue: "#",
+    compareLinkHref: attribute.text("Compare link href", {
+      defaultValue: "#compare",
     }),
   },
+  ssr: false,
 });
+
+export default PricingCardWebflow;

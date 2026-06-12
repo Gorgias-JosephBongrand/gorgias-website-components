@@ -1,92 +1,30 @@
-// Filename is a stable identifier — do not rename after sharing to a Library.
-
 import { PricingCardEnterprise } from "./PricingCardEnterprise";
-import "./PricingCardEnterprise.module.css";
 
-declareComponent({
-  component: PricingCardEnterprise,
-  displayName: "Pricing Card — Enterprise",
-  ssr: true,
+const DEFAULT_FEATURES_STR = [
+  "SSO (SAML), audit logs, SCIM provisioning",
+  "Unlimited Help Centers, API 4 req/sec",
+  "Custom DPA/MSA + security review support",
+  "Dedicated CSM + solutions architect",
+  "New Actions / deeper integrations & custom automations",
+  "Knowledge-gap and knowledge-conflict opportunities",
+];
+
+const PricingCardEnterpriseWebflow = declareComponent(PricingCardEnterprise, {
+  name: "PricingCardEnterprise",
+  description: "Full-width 2-column enterprise card with feature list. Not a plan card — separate CTA section.",
+  group: "Pricing",
   props: {
-    planName: attribute({
-      type: "PlainText",
-      displayName: "Plan name",
-      defaultValue: "Advanced",
+    eyebrow: attribute.text("Eyebrow", { defaultValue: "Enterprise" }),
+    title: attribute.text("Title", { defaultValue: "Need a fully custom plan?" }),
+    description: attribute.text("Description", {
+      defaultValue:
+        "Get a tailored package with dedicated support, custom integrations, and enterprise-grade security built around your team.",
     }),
-    description: attribute({
-      type: "PlainText",
-      displayName: "Description",
-      defaultValue: "High-volume AI scaling, with white-glove onboarding & analytics.",
-    }),
-    originalPrice: attribute({
-      type: "PlainText",
-      displayName: "Original price (strikethrough, leave empty to hide)",
-      defaultValue: "$1035",
-    }),
-    currentPrice: attribute({
-      type: "PlainText",
-      displayName: "Current price",
-      defaultValue: "$862",
-    }),
-    pricePeriod: attribute({
-      type: "PlainText",
-      displayName: "Price period",
-      defaultValue: "/mo",
-    }),
-    annualNote: attribute({
-      type: "PlainText",
-      displayName: "Annual billing note",
-      defaultValue: "$10,344 billed annually",
-    }),
-    ticketCount: attribute({
-      type: "PlainText",
-      displayName: "Ticket count",
-      defaultValue: "5,000 tickets / month",
-    }),
-    helpdeskPrice: attribute({
-      type: "PlainText",
-      displayName: "Helpdesk price",
-      defaultValue: "$750/mo",
-    }),
-    aiAgentPrice: attribute({
-      type: "PlainText",
-      displayName: "AI Agent price",
-      defaultValue: "$112/mo",
-    }),
-    aiAgentNote: attribute({
-      type: "PlainText",
-      displayName: "AI Agent sub-note",
-      defaultValue: "~750 automated interactions · at $0.90 per interaction",
-    }),
-    showAiAgentInfoIcon: attribute({
-      type: "Boolean",
-      displayName: "Show AI Agent info icon",
-      defaultValue: true,
-    }),
-    ctaLabel: attribute({
-      type: "PlainText",
-      displayName: "CTA label",
-      defaultValue: "Talk to sales",
-    }),
-    ctaHref: attribute({
-      type: "PlainText",
-      displayName: "CTA URL",
-      defaultValue: "#",
-    }),
-    ctaTrackingId: attribute({
-      type: "PlainText",
-      displayName: "CTA tracking ID (dataLayer)",
-      defaultValue: "",
-    }),
-    compareLinkLabel: attribute({
-      type: "PlainText",
-      displayName: "Compare link label",
-      defaultValue: "Compare all features ↓",
-    }),
-    compareLinkHref: attribute({
-      type: "PlainText",
-      displayName: "Compare link URL",
-      defaultValue: "#",
-    }),
+    ctaLabel: attribute.text("CTA label", { defaultValue: "Talk to Sales" }),
+    ctaHref: attribute.text("CTA href", { defaultValue: "#" }),
+    features: attribute.json("Features", { defaultValue: DEFAULT_FEATURES_STR }),
   },
+  ssr: true,
 });
+
+export default PricingCardEnterpriseWebflow;
