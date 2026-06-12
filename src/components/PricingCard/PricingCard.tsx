@@ -1,14 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export type PricingCardState = "default" | "featured" | "disabled";
 export type PricingCardCtaVariant = "dark" | "ghost";
@@ -57,20 +51,34 @@ function CheckIcon() {
 }
 
 function InfoDot({ tooltip }: { tooltip: string }) {
+  const [open, setOpen] = useState(false);
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger
-          aria-label="More info"
-          className="inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-ink/40 bg-transparent p-0 font-sans text-[10px] font-semibold not-italic leading-none text-ink/75"
+    <span
+      className="relative inline-flex"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        aria-label="More info"
+        onClick={(e) => {
+          e.preventDefault();
+          setOpen((o) => !o);
+        }}
+        className="inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-ink/40 bg-transparent p-0 font-sans text-[10px] font-semibold not-italic leading-none text-ink/75"
+      >
+        i
+      </button>
+      {open && (
+        <span
+          role="tooltip"
+          className="pointer-events-none absolute bottom-[calc(100%+8px)] left-[-8px] z-30 w-[250px] rounded-lg bg-ink px-3 py-2.5 text-[11.5px] font-normal leading-normal text-white [box-shadow:0_8px_20px_-8px_rgba(0,0,0,0.32)]"
         >
-          i
-        </TooltipTrigger>
-        <TooltipContent className="w-[250px] max-w-[250px] rounded-lg bg-ink px-3 py-2.5 text-[11.5px] font-normal leading-normal text-white">
           {tooltip}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+          <span className="absolute -bottom-1 left-3 size-2 rotate-45 bg-ink" />
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -146,7 +154,7 @@ export function PricingCard({
   return (
     <article
       className={cn(
-        "relative flex w-full flex-col gap-8 overflow-hidden rounded-2xl bg-white px-6 pb-6 pt-10 font-sans text-base leading-normal text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)] transition-opacity",
+        "relative flex w-full flex-col gap-8 rounded-2xl bg-white px-6 pb-6 pt-10 font-sans text-base leading-normal text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)] transition-opacity",
         isDisabled && "pointer-events-none opacity-35"
       )}
     >

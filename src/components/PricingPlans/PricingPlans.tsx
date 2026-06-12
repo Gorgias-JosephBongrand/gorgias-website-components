@@ -81,7 +81,7 @@ export function PricingPlans({
       </div>
 
       {/* Plan cards */}
-      <div className="mx-auto mb-4 grid w-full max-w-[1240px] grid-cols-1 items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mx-auto mb-4 grid w-full max-w-[1240px] grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {plans.map((plan) => (
           <PricingCard key={plan.key} {...computeCardProps(plan, billing, aiOn)} />
         ))}

@@ -39,7 +39,7 @@ export function PricingCardEnterprise({
       ? features.split("\n").map((f) => f.trim()).filter(Boolean)
       : features;
   return (
-    <article className="grid w-full grid-cols-2 gap-12 rounded-2xl bg-white p-6 font-sans text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)]">
+    <article className="grid w-full grid-cols-1 gap-8 rounded-2xl bg-white p-6 font-sans text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)] md:grid-cols-2 md:gap-12">
       <div className="flex flex-col items-start justify-between gap-6">
         <div className="flex flex-col gap-2">
           <h3 className="m-0 text-lg font-medium leading-normal text-ink">{title}</h3>
