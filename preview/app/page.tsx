@@ -1,4 +1,4 @@
-import { PricingSection } from "./PricingSection";
+import { PricingPlans } from "../../src/components/PricingPlans/PricingPlans";
 
 export default function PreviewPage() {
   return (
@@ -6,7 +6,7 @@ export default function PreviewPage() {
       <h1 style={{ textAlign: "center", marginBottom: 40, fontSize: 20, fontWeight: 600, color: "#1a1e23" }}>
         Pricing Cards — Component Preview
       </h1>
-      <PricingSection />
+      <PricingPlans />
     </main>
   );
 }
