@@ -38,14 +38,14 @@ export function AiAgentToggle({
           toggle();
         }}
         className={cn(
-          "relative h-[18px] w-8 shrink-0 cursor-pointer rounded-full border-0 p-0 transition-colors",
+          "relative h-[18px] w-[32px] shrink-0 cursor-pointer rounded-full border-0 p-0 transition-colors",
           on ? "bg-coral" : "bg-line"
         )}
       >
         <span
           className={cn(
-            "absolute top-0.5 size-3.5 rounded-full bg-[#fbfbfb] [box-shadow:0_1px_2px_rgba(0,0,0,0.18)] transition-all",
-            on ? "left-4" : "left-0.5"
+            "absolute top-[2px] size-[14px] rounded-full bg-[#fbfbfb] [box-shadow:0_1px_2px_rgba(0,0,0,0.18)] transition-all",
+            on ? "left-[16px]" : "left-[2px]"
           )}
         />
       </button>
