@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./AiAgentToggle.module.css";
+import { cn } from "@/lib/utils";
 
 export interface AiAgentToggleProps {
   defaultOn?: boolean;
@@ -23,17 +23,31 @@ export function AiAgentToggle({
   };
 
   return (
-    <div className={styles.root} onClick={toggle}>
-      <span className={styles.label}>{label}</span>
+    <div
+      className="inline-flex cursor-pointer items-center gap-2.5 p-1 font-sans antialiased"
+      onClick={toggle}
+    >
+      <span className="select-none text-base leading-normal text-ink">{label}</span>
       <button
         type="button"
         role="switch"
         aria-checked={on}
         aria-label={label}
-        className={`${styles.track}${on ? ` ${styles.on}` : ""}`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggle();
+        }}
+        className={cn(
+          "relative h-[18px] w-8 shrink-0 cursor-pointer rounded-full border-0 p-0 transition-colors",
+          on ? "bg-coral" : "bg-line"
+        )}
       >
-        <span className={styles.thumb} />
+        <span
+          className={cn(
+            "absolute top-0.5 size-3.5 rounded-full bg-[#fbfbfb] shadow-[0_1px_2px_rgba(0,0,0,0.18)] transition-all",
+            on ? "left-4" : "left-0.5"
+          )}
+        />
       </button>
     </div>
   );

@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import styles from "./PricingCard.module.css";
+import React from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export type PricingCardState = "default" | "featured" | "disabled";
 export type PricingCardCtaVariant = "dark" | "ghost";
@@ -14,23 +21,18 @@ export interface PricingCardProps {
 
   // Plan identity
   planName?: string;
-  /** Audience / description line under the name */
   audience?: string;
 
   // Pricing — pass pre-formatted strings (e.g. "$345", "$414")
-  /** Strikethrough price. Leave empty to hide. */
   originalPrice?: string;
   currentPrice?: string;
   pricePeriod?: string;
-  /** e.g. "$4,140 billed annually" or "Billed monthly · cancel anytime" */
   billingNote?: string;
 
-  // Feature rows — all text, set per billing/AI state from the Designer or MCP
+  // Feature rows
   ticketLabel?: string;
   helpdeskPrice?: string;
-  /** e.g. "$45/mo" (with base) or "$1.00 / interaction" (Starter/pay-per-use) */
   aiAgentDisplayValue?: string;
-  /** Sub-note under AI Agent row */
   aiAgentNote?: string;
   /** Tooltip body shown on the (i) info dot. Leave empty to hide the dot. */
   aiAgentTooltip?: string;
@@ -55,28 +57,56 @@ function CheckIcon() {
 }
 
 function InfoDot({ tooltip }: { tooltip: string }) {
-  const [open, setOpen] = useState(false);
   return (
-    <span
-      className={styles.infoDotWrap}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <button
-        type="button"
-        aria-label="More info"
-        className={styles.infoDot}
-        onClick={(e) => { e.preventDefault(); setOpen((o) => !o); }}
-      >
-        i
-      </button>
-      {open && (
-        <span role="tooltip" className={styles.tooltip}>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger
+          aria-label="More info"
+          className="inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-ink/40 bg-transparent p-0 font-sans text-[10px] font-semibold not-italic leading-none text-ink/75"
+        >
+          i
+        </TooltipTrigger>
+        <TooltipContent className="w-[250px] max-w-[250px] rounded-lg bg-ink px-3 py-2.5 text-[11.5px] font-normal leading-normal text-white">
           {tooltip}
-          <span className={styles.tooltipArrow} />
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+function PlanRow({
+  label,
+  labelBold,
+  info,
+  value,
+}: {
+  label: string;
+  labelBold?: boolean;
+  info?: React.ReactNode;
+  value?: string;
+}) {
+  return (
+    <div className="flex min-h-6 items-center justify-between gap-3">
+      <span className="inline-flex min-w-0 items-center gap-1">
+        <span className="inline-flex shrink-0 pr-1 text-green">
+          <CheckIcon />
+        </span>
+        <span
+          className={cn(
+            "whitespace-nowrap text-sm leading-normal tracking-[0.01em]",
+            labelBold ? "font-bold text-ink" : "font-normal text-ink/75"
+          )}
+        >
+          {label}
+        </span>
+        {info}
+      </span>
+      {value && (
+        <span className="whitespace-nowrap text-right text-sm font-bold leading-normal text-ink">
+          {value}
         </span>
       )}
-    </span>
+    </div>
   );
 }
 
@@ -108,95 +138,97 @@ export function PricingCard({
   const handleCta = () => {
     const id = ctaTrackingId ?? `pricing-${planName?.toLowerCase().replace(/\s+/g, "-")}-cta`;
     if (typeof window !== "undefined") {
-      ((window as unknown as { dataLayer?: unknown[] }).dataLayer ?? []);
-      const dl = (window as unknown as { dataLayer: unknown[] }).dataLayer;
+      const dl = (window as unknown as { dataLayer?: unknown[] }).dataLayer;
       if (Array.isArray(dl)) dl.push({ event: "cta_click", cta_id: id });
     }
   };
 
   return (
-    <article className={`${styles.card}${isDisabled ? ` ${styles.disabled}` : ""}`}>
+    <article
+      className={cn(
+        "relative flex w-full flex-col gap-8 rounded-2xl bg-white px-6 pb-6 pt-10 font-sans text-base leading-normal text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)] transition-opacity",
+        isDisabled && "pointer-events-none opacity-35"
+      )}
+    >
       {/* Tag strip */}
       {showTag && (
-        <div className={styles.tagStrip}>
-          <span className={styles.tagDot} />
-          <span className={styles.tagText}>{tagText}</span>
+        <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center gap-2 rounded-t-2xl bg-fog">
+          <span className="size-1.5 shrink-0 rounded-full bg-coral" />
+          <span className="text-[13px] font-medium leading-none text-ink">{tagText}</span>
         </div>
       )}
 
       {/* Header: name + audience + price */}
-      <div className={styles.header}>
-        <div className={styles.nameBlock}>
-          <h3 className={styles.planName}>{planName}</h3>
-          <p className={styles.audience}>{audience}</p>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <h3 className="m-0 text-lg font-medium leading-normal text-ink">{planName}</h3>
+          <p className="m-0 min-h-[42px] text-sm leading-normal tracking-[0.01em] text-ink/75">
+            {audience}
+          </p>
         </div>
 
-        <div className={styles.priceBlock}>
-          <div className={styles.priceRow}>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-end gap-2">
             {originalPrice && (
-              <span className={styles.priceStrike}>{originalPrice}</span>
+              <span className="pb-1.5 text-xl font-medium leading-normal text-ink/65 line-through">
+                {originalPrice}
+              </span>
             )}
-            <span className={styles.priceCurrent}>{currentPrice}</span>
-            <span className={styles.pricePeriod}>{pricePeriod}</span>
+            <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
+              {currentPrice}
+            </span>
+            <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
+              {pricePeriod}
+            </span>
           </div>
-          <p className={styles.billingNote}>{billingNote}</p>
+          <p className="m-0 text-base leading-normal text-ink/75">{billingNote}</p>
         </div>
       </div>
 
       {/* Included feature list */}
-      <div className={styles.features}>
-        <span className={styles.featuresLabel}>Included</span>
-        <div className={styles.featureRows}>
-          {/* Tickets */}
-          <div className={styles.planRow}>
-            <span className={styles.planRowLeft}>
-              <span className={styles.checkIcon}><CheckIcon /></span>
-              <span className={styles.rowLabelBold}>{ticketLabel}</span>
-            </span>
-          </div>
-
-          <div className={styles.divider} />
-
-          {/* Helpdesk */}
-          <div className={styles.planRow}>
-            <span className={styles.planRowLeft}>
-              <span className={styles.checkIcon}><CheckIcon /></span>
-              <span className={styles.rowLabel}>Helpdesk</span>
-            </span>
-            <span className={styles.rowValue}>{helpdeskPrice}</span>
-          </div>
-
-          <div className={styles.divider} />
-
-          {/* AI Agent */}
-          <div className={styles.aiAgentGroup}>
-            <div className={styles.planRow}>
-              <span className={styles.planRowLeft}>
-                <span className={styles.checkIcon}><CheckIcon /></span>
-                <span className={styles.rowLabel}>AI Agent</span>
-                {aiAgentTooltip && <InfoDot tooltip={aiAgentTooltip} />}
-              </span>
-              <span className={styles.rowValue}>{aiAgentDisplayValue}</span>
-            </div>
+      <div className="flex flex-col gap-1">
+        <span className="text-sm leading-normal tracking-[0.01em] text-ink/75">Included</span>
+        <div className="flex flex-col gap-2 pt-1">
+          <PlanRow label={ticketLabel} labelBold />
+          <div className="h-px bg-line" />
+          <PlanRow label="Helpdesk" value={helpdeskPrice} />
+          <div className="h-px bg-line" />
+          <div className="flex flex-col gap-1">
+            <PlanRow
+              label="AI Agent"
+              info={aiAgentTooltip ? <InfoDot tooltip={aiAgentTooltip} /> : undefined}
+              value={aiAgentDisplayValue}
+            />
             {aiAgentNote && (
-              <span className={styles.aiNote}>{aiAgentNote}</span>
+              <span className="text-xs leading-normal tracking-[0.01em] text-ink/75">
+                {aiAgentNote}
+              </span>
             )}
           </div>
         </div>
       </div>
 
       {/* CTA */}
-      <div className={styles.ctaArea}>
-        <a
-          href={isDisabled ? undefined : ctaHref}
-          className={`${styles.btn} ${ctaVariant === "ghost" ? styles.btnGhost : styles.btnDark}`}
-          onClick={!isDisabled ? handleCta : undefined}
+      <div className="mt-auto flex flex-col items-center gap-4">
+        <Button
+          variant={ctaVariant === "ghost" ? "brand-ghost" : "brand-dark"}
+          size="xl"
+          className="w-full"
           aria-disabled={isDisabled}
+          render={
+            <a
+              href={isDisabled ? undefined : ctaHref}
+              onClick={!isDisabled ? handleCta : undefined}
+            />
+          }
         >
           {ctaLabel}
-        </a>
+        </Button>
         {compareLinkLabel && (
-          <a href={compareLinkHref} className={styles.compareLink}>
+          <a
+            href={compareLinkHref}
+            className="inline-flex cursor-pointer items-center gap-1 text-base font-medium text-ink/75 no-underline hover:text-ink"
+          >
             {compareLinkLabel}
           </a>
         )}

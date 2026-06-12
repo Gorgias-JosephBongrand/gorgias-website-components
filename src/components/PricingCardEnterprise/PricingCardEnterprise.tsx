@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./PricingCardEnterprise.module.css";
+import { Button } from "@/components/ui/button";
 
 const DEFAULT_FEATURES = [
   "SSO (SAML), audit logs, SCIM provisioning",
@@ -34,21 +34,24 @@ export function PricingCardEnterprise({
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {
   return (
-    <article className={styles.card}>
-      <div className={styles.left}>
-        <div className={styles.textBlock}>
-          <h3 className={styles.title}>{title}</h3>
-          <p className={styles.description}>{description}</p>
+    <article className="grid w-full grid-cols-2 gap-12 rounded-2xl bg-white p-6 font-sans text-ink antialiased shadow-[inset_0_0_0_1px_var(--color-line)]">
+      <div className="flex flex-col items-start justify-between gap-6">
+        <div className="flex flex-col gap-2">
+          <h3 className="m-0 text-lg font-medium leading-normal text-ink">{title}</h3>
+          <p className="m-0 max-w-[480px] text-base leading-normal text-ink/75">{description}</p>
         </div>
-        <a href={ctaHref} className={styles.btn}>
+        <Button variant="brand-ghost" size="xl" render={<a href={ctaHref} />}>
           {ctaLabel}
-        </a>
+        </Button>
       </div>
 
-      <div className={styles.right}>
+      <div className="flex flex-col gap-3 pt-1">
         {features.map((feat, i) => (
-          <div key={i} className={styles.featureItem}>
-            <span className={styles.checkIcon}>
+          <div
+            key={i}
+            className="flex items-start gap-2 text-sm leading-normal tracking-[0.01em] text-ink/75"
+          >
+            <span className="inline-flex shrink-0 pt-[3px] text-green">
               <CheckIcon />
             </span>
             <span>{feat}</span>

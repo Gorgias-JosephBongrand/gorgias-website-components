@@ -1,82 +1,42 @@
 /*
- * Brand tokens — canonical source of truth.
+ * Brand tokens — canonical source of truth (Gorgias Q2 2026, from v2-shared.jsx).
  * These values are mirrored into Webflow Variables (via Variables API/MCP).
  * Changing a value here + republishing re-skins every component that references it.
- *
- * Naming convention: --color-{palette}-{shade}, --spacing-{scale}, etc.
- * All names must match the Webflow Variable names exactly (snake-case → kebab-case).
  */
 
 @theme {
-  /* ─── Color: Brand ─────────────────────────────────────────── */
-  --color-brand-primary: #5b4fcf;
-  --color-brand-primary-hover: #4a3fb8;
-  --color-brand-primary-light: #ede9ff;
-  --color-brand-secondary: #1a1a2e;
-  --color-brand-accent: #f97316;
+  /* ─── Color: Gorgias palette ───────────────────────────────── */
+  --color-ink: #1a1e23;
+  --color-fog: #f3f1f0;
+  --color-line: #e8e3e1;
+  --color-coral: #ff9780;
+  --color-coral-deep: #ff7a5c;
+  --color-green: #1f7a5e;
+  --color-cream: #fff9f4;
 
-  /* ─── Color: Neutral ────────────────────────────────────────── */
-  --color-neutral-0: #ffffff;
-  --color-neutral-50: #f9fafb;
-  --color-neutral-100: #f3f4f6;
-  --color-neutral-200: #e5e7eb;
-  --color-neutral-300: #d1d5db;
-  --color-neutral-500: #6b7280;
-  --color-neutral-700: #374151;
-  --color-neutral-900: #111827;
+  /* ─── shadcn semantic mapping ──────────────────────────────── */
+  --color-background: #ffffff;
+  --color-foreground: #1a1e23;
+  --color-card: #ffffff;
+  --color-card-foreground: #1a1e23;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1a1e23;
+  --color-primary: #1a1e23;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f3f1f0;
+  --color-secondary-foreground: #1a1e23;
+  --color-muted: #f3f1f0;
+  --color-muted-foreground: rgba(26, 30, 35, 0.75);
+  --color-accent: #ff9780;
+  --color-accent-foreground: #1a1e23;
+  --color-border: #e8e3e1;
+  --color-input: #e8e3e1;
+  --color-ring: rgba(26, 30, 35, 0.4);
+  --color-destructive: #ef4444;
 
-  /* ─── Color: Semantic ───────────────────────────────────────── */
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
+  /* ─── Typography ───────────────────────────────────────────── */
+  --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
-  /* ─── Typography ────────────────────────────────────────────── */
-  --font-family-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-family-mono: "JetBrains Mono", ui-monospace, monospace;
-
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
-  --font-size-5xl: 3rem;
-
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  --line-height-tight: 1.25;
-  --line-height-snug: 1.375;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.625;
-
-  /* ─── Spacing ───────────────────────────────────────────────── */
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-10: 2.5rem;
-  --spacing-12: 3rem;
-  --spacing-16: 4rem;
-  --spacing-20: 5rem;
-  --spacing-24: 6rem;
-
-  /* ─── Border radius ─────────────────────────────────────────── */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-full: 9999px;
-
-  /* ─── Shadow ────────────────────────────────────────────────── */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* ─── Radius ───────────────────────────────────────────────── */
+  --radius: 0.5rem; /* 8px — buttons; cards use rounded-2xl (16px) */
 }
