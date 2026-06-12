@@ -22,7 +22,6 @@ export default function PreviewPage() {
         }}
       >
         <AddonCard kind="voice" />
-        {/* kind alone drives title/tagline/copy/tags/unit/tiers */}
         <AddonCard kind="sms" />
       </div>
     </main>

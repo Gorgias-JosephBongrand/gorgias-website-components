@@ -210,7 +210,7 @@ export function AddonCard({
   defaultTierIndex = 4,
   tiersJson = "",
 }: AddonCardProps) {
-  const kindDefaults = KIND_DEFAULTS[kind] ?? KIND_DEFAULTS.voice;
+  const kindDefaults = KIND_DEFAULTS[kind === "sms" ? "sms" : "voice"];
   const resolvedTitle = title.trim() || kindDefaults.title;
   const resolvedTagline = tagline.trim() || kindDefaults.tagline;
   const resolvedCounted = counted.trim() || kindDefaults.counted;
