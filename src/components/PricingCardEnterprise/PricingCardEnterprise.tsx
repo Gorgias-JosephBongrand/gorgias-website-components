@@ -40,7 +40,7 @@ export function PricingCardEnterprise({
           <h3 className="m-0 text-lg font-medium leading-normal text-ink">{title}</h3>
           <p className="m-0 max-w-[480px] text-base leading-normal text-ink/75">{description}</p>
         </div>
-        <Button variant="brand-ghost" size="xl" render={<a href={ctaHref} />}>
+        <Button variant="brand-ghost" size="xl" nativeButton={false} render={<a href={ctaHref} />}>
           {ctaLabel}
         </Button>
       </div>

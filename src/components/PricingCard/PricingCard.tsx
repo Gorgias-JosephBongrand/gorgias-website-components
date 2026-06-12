@@ -214,6 +214,7 @@ export function PricingCard({
           variant={ctaVariant === "ghost" ? "brand-ghost" : "brand-dark"}
           size="xl"
           className="w-full"
+          nativeButton={false}
           aria-disabled={isDisabled}
           render={
             <a
