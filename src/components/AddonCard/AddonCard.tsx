@@ -16,15 +16,52 @@ import {
 
 export type AddonKind = "voice" | "sms";
 
+/** Per-kind content defaults — any prop left blank falls back to these. */
+const KIND_DEFAULTS = {
+  voice: {
+    title: "Voice",
+    tagline: "Phone support, inside your helpdesk",
+    counted:
+      "A conversation becomes a Voice ticket the moment a call connects. Unlimited follow-up calls on that ticket at no extra charge.",
+    unit: "calls",
+    tags: [
+      "US & International",
+      "Call recording & transcripts",
+      "IVR & routing",
+      "AI Agent voice handoff",
+    ],
+  },
+  sms: {
+    title: "SMS",
+    tagline: "Two-way text conversations, on any plan",
+    counted:
+      "A conversation becomes an SMS ticket the moment a text is exchanged. Unlimited follow-up texts on that ticket at no extra charge.",
+    unit: "texts",
+    tags: [
+      "Inbound & outbound",
+      "Works with marketing tools",
+      "MMS supported",
+      "AI Agent answers on SMS",
+    ],
+  },
+} as const;
+
+/** Split a Webflow single-line text prop into list items: | ; or newline */
+function splitList(s: string): string[] {
+  return s.split(/\r?\n|\||;/).map((t) => t.trim()).filter(Boolean);
+}
+
 export interface AddonCardProps {
   kind?: AddonKind;
+  /** Blank = derived from Kind */
   title?: string;
+  /** Blank = derived from Kind */
   tagline?: string;
-  /** "How it's counted" body copy (label is rendered bold automatically) */
+  /** "How it's counted" body copy. Blank = derived from Kind */
   counted?: string;
-  /** Capability tags — newline-separated string (Webflow) or array */
+  /** Capability tags — separate with | (or ; / newline). Blank = from Kind */
   tags?: string[] | string;
-  /** Unit word used in dropdown labels and the Included stat */
+  /** Unit word in dropdown labels and Included stat. Blank = from Kind */
   unit?: string;
   /** Initial billing cycle; syncs with every BillingToggle on the page */
   defaultBilling?: BillingCycle;
@@ -164,15 +201,21 @@ function TierStat({
 
 export function AddonCard({
   kind = "voice",
-  title = "Voice",
-  tagline = "Phone support, inside your helpdesk",
-  counted = "A conversation becomes a Voice ticket the moment a call connects. Unlimited follow-up calls on that ticket at no extra charge.",
-  tags = "US & International\nCall recording & transcripts\nIVR & routing\nAI Agent voice handoff",
-  unit = "calls",
+  title = "",
+  tagline = "",
+  counted = "",
+  tags = "",
+  unit = "",
   defaultBilling = "annual",
   defaultTierIndex = 4,
   tiersJson = "",
 }: AddonCardProps) {
+  const kindDefaults = KIND_DEFAULTS[kind] ?? KIND_DEFAULTS.voice;
+  const resolvedTitle = title.trim() || kindDefaults.title;
+  const resolvedTagline = tagline.trim() || kindDefaults.tagline;
+  const resolvedCounted = counted.trim() || kindDefaults.counted;
+  const resolvedUnit = unit.trim() || kindDefaults.unit;
+
   const [billing, setBilling] = useState<BillingCycle>(defaultBilling);
   const tiers = useMemo(
     () => parseTiers(tiersJson, kind === "voice" ? VOICE_TIERS : SMS_TIERS),
@@ -191,19 +234,19 @@ export function AddonCard({
 
   const tier = tiers[Math.min(tierIdx, tiers.length - 1)];
   const rates = billing === "annual" ? tier.annual : tier.monthly;
-  const tagList =
-    typeof tags === "string" ? tags.split("\n").map((t) => t.trim()).filter(Boolean) : tags;
+  const customTags = typeof tags === "string" ? splitList(tags) : tags;
+  const tagList = customTags.length > 0 ? customTags : kindDefaults.tags;
 
   return (
     <article className="flex w-full flex-col gap-6 rounded-2xl bg-white p-6 font-sans text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)]">
       {/* Header */}
       <div className="flex items-center gap-6">
         <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg border border-line bg-white/90 text-ink [box-shadow:0_1.667px_2.5px_0_rgba(0,0,0,0.1)]">
-          {kind === "voice" ? <PhoneIcon /> : <ChatIcon />}
+          {kind === "sms" ? <ChatIcon /> : <PhoneIcon />}
         </div>
         <div className="flex flex-1 flex-col">
-          <span className="text-lg font-medium leading-normal text-ink">{title}</span>
-          <span className="text-base leading-normal text-ink/75">{tagline}</span>
+          <span className="text-lg font-medium leading-normal text-ink">{resolvedTitle}</span>
+          <span className="text-base leading-normal text-ink/75">{resolvedTagline}</span>
         </div>
       </div>
 
@@ -220,19 +263,19 @@ export function AddonCard({
           </span>
         </div>
         <span className="text-sm leading-normal tracking-[0.01em] text-ink/75">
-          <span className="font-medium text-ink">How it&rsquo;s counted:</span> {counted}
+          <span className="font-medium text-ink">How it&rsquo;s counted:</span> {resolvedCounted}
         </span>
       </div>
 
       {/* Volume estimate */}
       <div className="flex flex-col gap-2">
         <span className="text-base font-medium leading-normal text-ink">Estimate your volume</span>
-        <TierDropdown tiers={tiers} unit={unit} value={tierIdx} onChange={setTierIdx} />
+        <TierDropdown tiers={tiers} unit={resolvedUnit} value={tierIdx} onChange={setTierIdx} />
       </div>
 
       {/* Included / Per ticket / Extra ticket */}
       <div className="grid grid-cols-3 gap-4">
-        <TierStat label="Included" value={`${fmtVol(tier.incl)} ${unit}`} />
+        <TierStat label="Included" value={`${fmtVol(tier.incl)} ${resolvedUnit}`} />
         <TierStat label="Per ticket" value={fmtRate(rates.perTicket)} divider />
         <TierStat label="Extra ticket" value={`${fmtRate(rates.overage)} each`} divider />
       </div>

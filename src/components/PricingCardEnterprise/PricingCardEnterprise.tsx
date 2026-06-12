@@ -15,7 +15,7 @@ export interface PricingCardEnterpriseProps {
   description?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  /** Array, or newline-separated string (Webflow text prop) */
+  /** Array, or string separated by | ; or newline (Webflow text prop) */
   features?: string[] | string;
 }
 
@@ -36,7 +36,7 @@ export function PricingCardEnterprise({
 }: PricingCardEnterpriseProps) {
   const featureList =
     typeof features === "string"
-      ? features.split("\n").map((f) => f.trim()).filter(Boolean)
+      ? features.split(/\r?\n|\||;/).map((f) => f.trim()).filter(Boolean)
       : features;
   return (
     <article className="grid w-full grid-cols-1 gap-8 rounded-2xl bg-white p-6 font-sans text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)] md:grid-cols-2 md:gap-12">

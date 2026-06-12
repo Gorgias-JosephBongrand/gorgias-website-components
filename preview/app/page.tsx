@@ -22,14 +22,8 @@ export default function PreviewPage() {
         }}
       >
         <AddonCard kind="voice" />
-        <AddonCard
-          kind="sms"
-          title="SMS"
-          tagline="Two-way text conversations, on any plan"
-          counted="A conversation becomes an SMS ticket the moment a text is exchanged. Unlimited follow-up texts on that ticket at no extra charge."
-          tags={"Inbound & outbound\nWorks with marketing tools\nMMS supported\nAI Agent answers on SMS"}
-          unit="texts"
-        />
+        {/* kind alone drives title/tagline/copy/tags/unit/tiers */}
+        <AddonCard kind="sms" />
       </div>
     </main>
   );

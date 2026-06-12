@@ -5,7 +5,7 @@ import { AddonCard } from "./AddonCard";
 export default declareComponent(AddonCard, {
   name: "AddonCard",
   description:
-    "Voice/SMS add-on card with volume-tier dropdown. Billing syncs automatically with any BillingToggle on the page.",
+    "Voice/SMS add-on card with volume-tier dropdown. Kind drives the icon, title, tagline, copy, tags, unit, and tier table — override any field by filling it in. Billing syncs with any BillingToggle on the page.",
   group: "Pricing",
   props: {
     kind: props.Variant({
@@ -13,22 +13,26 @@ export default declareComponent(AddonCard, {
       options: ["voice", "sms"],
       defaultValue: "voice",
     }),
-    title: props.Text({ name: "Title", defaultValue: "Voice" }),
+    title: props.Text({
+      name: "Title (blank = from Kind)",
+      defaultValue: "",
+    }),
     tagline: props.Text({
-      name: "Tagline",
-      defaultValue: "Phone support, inside your helpdesk",
+      name: "Tagline (blank = from Kind)",
+      defaultValue: "",
     }),
     counted: props.Text({
-      name: "How it's counted",
-      defaultValue:
-        "A conversation becomes a Voice ticket the moment a call connects. Unlimited follow-up calls on that ticket at no extra charge.",
+      name: "How it's counted (blank = from Kind)",
+      defaultValue: "",
     }),
     tags: props.Text({
-      name: "Tags (one per line)",
-      defaultValue:
-        "US & International\nCall recording & transcripts\nIVR & routing\nAI Agent voice handoff",
+      name: "Tags, separated by | (blank = from Kind)",
+      defaultValue: "",
     }),
-    unit: props.Text({ name: "Unit", defaultValue: "calls" }),
+    unit: props.Text({
+      name: "Unit (blank = from Kind)",
+      defaultValue: "",
+    }),
     defaultBilling: props.Variant({
       name: "Default billing",
       options: ["monthly", "annual"],

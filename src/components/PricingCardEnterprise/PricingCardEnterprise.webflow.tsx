@@ -9,7 +9,7 @@ const DEFAULT_FEATURES = [
   "Dedicated CSM + solutions architect",
   "New Actions / deeper integrations & custom automations",
   "Knowledge-gap and knowledge-conflict opportunities",
-].join("\n");
+].join(" | ");
 
 export default declareComponent(PricingCardEnterprise, {
   name: "PricingCardEnterprise",
@@ -26,7 +26,7 @@ export default declareComponent(PricingCardEnterprise, {
     ctaLabel: props.Text({ name: "CTA label", defaultValue: "Talk to Sales" }),
     ctaHref: props.Text({ name: "CTA href", defaultValue: "#" }),
     features: props.Text({
-      name: "Features (one per line)",
+      name: "Features, separated by |",
       defaultValue: DEFAULT_FEATURES,
     }),
   },
