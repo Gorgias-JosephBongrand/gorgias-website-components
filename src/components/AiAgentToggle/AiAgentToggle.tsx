@@ -44,7 +44,7 @@ export function AiAgentToggle({
       >
         <span
           className={cn(
-            "absolute top-0.5 size-3.5 rounded-full bg-[#fbfbfb] shadow-[0_1px_2px_rgba(0,0,0,0.18)] transition-all",
+            "absolute top-0.5 size-3.5 rounded-full bg-[#fbfbfb] [box-shadow:0_1px_2px_rgba(0,0,0,0.18)] transition-all",
             on ? "left-4" : "left-0.5"
           )}
         />

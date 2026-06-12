@@ -1,4 +1,31 @@
 @import "tailwindcss" source(none);
+
+/*
+ * Shadow-DOM compat: Tailwind v4 registers --tw-* defaults via @property,
+ * which Chrome ignores inside shadow roots (and Tailwind's own fallback is
+ * gated behind a Safari/Firefox-only @supports). Without these, utilities
+ * like `border` (border-style) and focus rings resolve to invalid values.
+ * The `properties` layer sorts before `utilities`, so classes that set
+ * these vars still win.
+ */
+@layer properties {
+  *, ::before, ::after, ::backdrop {
+    --tw-border-style: solid;
+    --tw-outline-style: solid;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-alpha: 100%;
+    --tw-inset-shadow: 0 0 #0000;
+    --tw-inset-shadow-alpha: 100%;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-inset-ring-shadow: 0 0 #0000;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-translate-z: 0;
+  }
+}
 @import "./tokens/brand.css";
 
 /* Explicit sources only — auto-detection disabled so the Webflow
