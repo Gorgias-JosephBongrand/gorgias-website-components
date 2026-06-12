@@ -1,0 +1,274 @@
+/* PricingCard — scoped to shadow DOM, no site classes cross this boundary */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 28px;
+  font-family: var(--font-family-sans, -apple-system, "Inter", sans-serif);
+  color: #111827;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Variants ── */
+.card.featured {
+  border: 2px solid #1d4ed8;
+}
+
+.card.disabled {
+  color: #9ca3af;
+}
+
+/* ── Top banner (featured: "Most popular · 12,600 brands") ── */
+.topBanner {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  background: #f3f4f6;
+  border-radius: 10px 10px 0 0;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+}
+
+/* Push card body down when banner is present */
+.hasBanner {
+  padding-top: 52px;
+}
+
+/* ── Top note (disabled: "Monthly billing only") ── */
+.topNote {
+  font-size: 13px;
+  color: #9ca3af;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ── Plan header ── */
+.planName {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: inherit;
+}
+
+.disabled .planName {
+  color: #9ca3af;
+}
+
+.description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.disabled .description {
+  color: #d1d5db;
+}
+
+/* ── Price block ── */
+.priceBlock {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.originalPrice {
+  font-size: 15px;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.disabled .originalPrice {
+  color: #d1d5db;
+}
+
+.currentPrice {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #111827;
+  line-height: 1;
+}
+
+.disabled .currentPrice {
+  color: #9ca3af;
+}
+
+.pricePeriod {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.annualNote {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.disabled .annualNote {
+  color: #d1d5db;
+}
+
+/* ── Feature list ── */
+.featuresLabel {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #111827;
+}
+
+.disabled .checkIcon {
+  color: #d1d5db;
+}
+
+.featureContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.featureName {
+  font-weight: 600;
+  color: #111827;
+}
+
+.featureNameNormal {
+  font-weight: 400;
+  color: #111827;
+}
+
+.disabled .featureName,
+.disabled .featureNameNormal {
+  color: #9ca3af;
+}
+
+.featurePrice {
+  font-size: 14px;
+  color: #111827;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+.disabled .featurePrice {
+  color: #9ca3af;
+}
+
+.featureNote {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.disabled .featureNote {
+  color: #d1d5db;
+}
+
+.infoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 9px;
+  font-style: normal;
+  cursor: default;
+  flex-shrink: 0;
+  margin-left: 2px;
+  margin-top: 2px;
+  color: #6b7280;
+}
+
+/* ── Spacer pushes CTA to bottom ── */
+.spacer {
+  flex: 1;
+}
+
+/* ── CTA button ── */
+.cta {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  box-sizing: border-box;
+  border: none;
+}
+
+.cta:hover {
+  opacity: 0.85;
+}
+
+.ctaFilled {
+  background: #111827;
+  color: #ffffff;
+}
+
+.ctaOutlined {
+  background: transparent;
+  color: #9ca3af;
+  border: 1px solid #d1d5db;
+}
+
+.disabled .cta {
+  pointer-events: none;
+}
+
+/* ── Compare link ── */
+.compareLink {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #374151;
+  text-decoration: none;
+  margin-top: 14px;
+}
+
+.disabled .compareLink {
+  color: #d1d5db;
+}
+
+.compareLink:hover {
+  text-decoration: underline;
+}
