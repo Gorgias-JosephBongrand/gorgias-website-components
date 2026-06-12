@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "./tokens/brand.css";
 
+/* Scan shadcn primitives outside src/ */
+@source "../components/**/*.tsx";
+@source "../lib/**/*.ts";
+
 /*
  * Global styles injected into every code component's shadow root via globals.ts.
  * Keep this minimal — component-scoped styles live in the component files.
