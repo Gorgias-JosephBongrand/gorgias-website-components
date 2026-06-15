@@ -128,7 +128,7 @@ export function CompareTable({
 
   return (
     <div className="w-full overflow-x-auto font-sans antialiased">
-      <div className="min-w-[720px] overflow-hidden rounded-2xl bg-white [box-shadow:inset_0_0_0_1px_var(--color-line)]">
+      <div className="min-w-[720px] overflow-hidden rounded-2xl border border-line bg-white">
         <table className="w-full border-separate border-spacing-0 text-base">
           <thead>
             <tr>
