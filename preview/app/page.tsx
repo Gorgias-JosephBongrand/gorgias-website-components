@@ -1,6 +1,7 @@
 import { PricingPlans } from "../../src/components/PricingPlans/PricingPlans";
 import { AddonCard } from "../../src/components/AddonCard/AddonCard";
 import { CompareTable } from "../../src/components/CompareTable/CompareTable";
+import { Faq } from "../../src/components/Faq/Faq";
 
 export default function PreviewPage() {
   return (
@@ -31,6 +32,13 @@ export default function PreviewPage() {
       </h2>
       <div style={{ maxWidth: 1240, margin: "0 auto" }}>
         <CompareTable />
+      </div>
+
+      <h2 style={{ textAlign: "center", margin: "64px 0 40px", fontSize: 20, fontWeight: 600, color: "#1a1e23" }}>
+        FAQ
+      </h2>
+      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+        <Faq />
       </div>
     </main>
   );
