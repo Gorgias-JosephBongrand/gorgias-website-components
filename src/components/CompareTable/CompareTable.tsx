@@ -132,12 +132,12 @@ export function CompareTable({
         <table className="w-full border-separate border-spacing-0 text-base">
           <thead>
             <tr>
-              <th className="w-[28%] bg-white p-6" />
+              <th className="w-[28%] border-b border-line bg-white p-6" />
               {plans.map((name, i) => (
                 <th
                   key={name}
                   className={cn(
-                    "w-[18%] p-6 text-left align-middle",
+                    "w-[18%] border-b border-line p-6 text-left align-middle",
                     i === featuredIndex ? "bg-fog/60" : "bg-white"
                   )}
                 >
