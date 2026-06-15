@@ -49,7 +49,7 @@ export const DEFAULT_PLANS: Plan[] = [
     cta: "Start free trial",
     ctaVariant: "ghost",
     ctaHref: "/signup",
-    automationRate: 20,
+    automationRate: 0,
     starterOnly: true,
   },
   {
@@ -65,7 +65,7 @@ export const DEFAULT_PLANS: Plan[] = [
     cta: "Start free trial",
     ctaVariant: "dark",
     ctaHref: "/signup",
-    automationRate: 30,
+    automationRate: 15,
   },
   {
     key: "pro",
@@ -80,7 +80,7 @@ export const DEFAULT_PLANS: Plan[] = [
     cta: "Start free trial",
     ctaVariant: "dark",
     ctaHref: "/signup",
-    automationRate: 50,
+    automationRate: 15,
     featured: true,
     badge: "Most popular · 12,600 brands",
   },
@@ -97,7 +97,7 @@ export const DEFAULT_PLANS: Plan[] = [
     cta: "Talk to sales",
     ctaVariant: "ghost",
     ctaHref: "/demo",
-    automationRate: 70,
+    automationRate: 15,
   },
 ];
 
