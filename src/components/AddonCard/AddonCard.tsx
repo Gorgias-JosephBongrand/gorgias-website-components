@@ -232,6 +232,11 @@ export function AddonCard({
   const isNone = tierIdx < 0;
   const tier = isNone ? null : tiers[Math.min(tierIdx, tiers.length - 1)];
   const rates = tier ? (billing === "annual" ? tier.annual : tier.monthly) : null;
+  // "None" state shows the cheapest entry point: "From $X" (first tier base)
+  const firstTierBase = tiers[0]
+    ? (billing === "annual" ? tiers[0].annual.base : tiers[0].monthly.base)
+    : 0;
+  const headlinePrice = rates ? rates.base : firstTierBase;
 
   // Broadcast the selection to the plan-card CTAs (fires on mount + change)
   useEffect(() => {
@@ -260,8 +265,11 @@ export function AddonCard({
       {/* Price + how it's counted */}
       <div className="flex flex-col gap-4">
         <div className="flex items-end gap-2">
+          {isNone && (
+            <span className="pb-[5px] text-lg font-medium leading-normal text-ink/75">From</span>
+          )}
           <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
-            {fmtMoney(rates ? rates.base : 0)}
+            {fmtMoney(headlinePrice)}
           </span>
           <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
             /mo · {billing} pricing
