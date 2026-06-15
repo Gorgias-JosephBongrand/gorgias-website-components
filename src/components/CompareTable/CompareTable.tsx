@@ -82,8 +82,9 @@ export interface CompareTableProps {
 
 function CheckIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-      <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+      <rect width="20" height="20" rx="10" fill="#E1FFE8" />
+      <path d="M14 7L8.5 12.5L6 10" stroke="#1A1E23" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -102,7 +103,7 @@ function parseSections(json?: string): CompareSection[] {
 function Cell({ value }: { value: string }) {
   if (value === "check") {
     return (
-      <span className="inline-flex size-5 items-center justify-center rounded-full bg-green-soft text-green">
+      <span className="inline-flex">
         <CheckIcon />
       </span>
     );
