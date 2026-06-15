@@ -6,11 +6,12 @@ import { AiAgentToggle } from "../AiAgentToggle/AiAgentToggle";
 import { PricingCard } from "../PricingCard/PricingCard";
 import { PricingCardEnterprise } from "../PricingCardEnterprise/PricingCardEnterprise";
 import { buildCtaHref, buildJsonLd, computeCardProps, parsePlans } from "./plans";
+import { hrefOf, type LinkValue } from "../../lib/link";
 
 /** Per-plan CTA override; blank fields fall back to the plan's own data. */
 interface PlanCtaConfig {
   label?: string;
-  href?: string;
+  href?: LinkValue;
   automationRate?: number;
 }
 
@@ -29,19 +30,19 @@ export interface PricingPlansProps {
   // Links carry automationRate (0 when AI Agent is off) + planSelected,
   // plus any incoming attribution params (ref, ref-position, …).
   starterCtaLabel?: string;
-  starterCtaHref?: string;
+  starterCtaHref?: LinkValue;
   starterAutomationRate?: number;
 
   basicCtaLabel?: string;
-  basicCtaHref?: string;
+  basicCtaHref?: LinkValue;
   basicAutomationRate?: number;
 
   proCtaLabel?: string;
-  proCtaHref?: string;
+  proCtaHref?: LinkValue;
   proAutomationRate?: number;
 
   advancedCtaLabel?: string;
-  advancedCtaHref?: string;
+  advancedCtaHref?: LinkValue;
   advancedAutomationRate?: number;
 
   // Enterprise card
@@ -49,7 +50,7 @@ export interface PricingPlansProps {
   enterpriseTitle?: string;
   enterpriseDescription?: string;
   enterpriseCtaLabel?: string;
-  enterpriseCtaHref?: string;
+  enterpriseCtaHref?: LinkValue;
 
   // JSON-LD structured data (SEO)
   emitJsonLd?: boolean;
@@ -66,26 +67,26 @@ export function PricingPlans({
   aiToggleLabel = "Include AI Agent",
 
   starterCtaLabel = "Start free trial",
-  starterCtaHref = "/signup",
+  starterCtaHref,
   starterAutomationRate,
 
   basicCtaLabel = "Start free trial",
-  basicCtaHref = "/signup",
+  basicCtaHref,
   basicAutomationRate,
 
   proCtaLabel = "Start free trial",
-  proCtaHref = "/signup",
+  proCtaHref,
   proAutomationRate,
 
   advancedCtaLabel = "Talk to sales",
-  advancedCtaHref = "/demo",
+  advancedCtaHref,
   advancedAutomationRate,
 
   showEnterprise = true,
   enterpriseTitle = "Need a fully custom plan?",
   enterpriseDescription = "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
   enterpriseCtaLabel = "Talk to Sales",
-  enterpriseCtaHref = "/demo",
+  enterpriseCtaHref,
   emitJsonLd = true,
   productName = "Gorgias",
   productUrl = "https://www.gorgias.com/pricing",
@@ -144,8 +145,10 @@ export function PricingPlans({
           const cfg = ctaByKey[plan.key] ?? {};
           // AI on → plan's baked automation rate; AI off → 0
           const rate = aiOn ? cfg.automationRate ?? plan.automationRate ?? 0 : 0;
+          // Link prop (or string) → base path; empty falls back to plan default
+          const base = hrefOf(cfg.href) || plan.ctaHref;
           const href = buildCtaHref(
-            cfg.href || plan.ctaHref,
+            base,
             { automationRate: rate, planSelected: plan.key },
             search
           );
@@ -154,7 +157,7 @@ export function PricingPlans({
               key={plan.key}
               {...computeCardProps(plan, billing, aiOn)}
               ctaLabel={cfg.label || plan.cta}
-              ctaHref={href}
+              ctaHref={{ href }}
             />
           );
         })}
@@ -167,7 +170,7 @@ export function PricingPlans({
             title={enterpriseTitle}
             description={enterpriseDescription}
             ctaLabel={enterpriseCtaLabel}
-            ctaHref={buildCtaHref(enterpriseCtaHref, {}, search)}
+            ctaHref={{ href: buildCtaHref(hrefOf(enterpriseCtaHref) || "/demo", {}, search) }}
           />
         </div>
       )}

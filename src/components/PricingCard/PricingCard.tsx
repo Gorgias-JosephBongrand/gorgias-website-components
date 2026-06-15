@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { CheckIcon } from "../../lib/icons";
+import { hrefOf, targetOf, type LinkValue } from "../../lib/link";
 
 export type PricingCardState = "default" | "featured" | "disabled";
 export type PricingCardCtaVariant = "dark" | "ghost";
@@ -35,10 +36,11 @@ export interface PricingCardProps {
   // CTA
   ctaVariant?: PricingCardCtaVariant;
   ctaLabel?: string;
-  ctaHref?: string;
+  /** String (computed/preview) or a Webflow Link object */
+  ctaHref?: LinkValue;
   ctaTrackingId?: string;
 
-  // Compare link
+  // Compare link (in-page anchor)
   compareLinkLabel?: string;
   compareLinkHref?: string;
 }
@@ -127,7 +129,7 @@ export function PricingCard({
   aiAgentTooltip = "A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours.",
   ctaVariant = "dark",
   ctaLabel = "Start free trial",
-  ctaHref = "#",
+  ctaHref,
   ctaTrackingId,
   compareLinkLabel = "Compare all features ↓",
   compareLinkHref = "#compare",
@@ -135,6 +137,8 @@ export function PricingCard({
   const isDisabled = state === "disabled";
   const isFeatured = state === "featured";
   const showTag = !!tagText && (isFeatured || isDisabled);
+  const ctaUrl = hrefOf(ctaHref);
+  const ctaTarget = targetOf(ctaHref);
 
   const handleCta = () => {
     const id = ctaTrackingId ?? `pricing-${planName?.toLowerCase().replace(/\s+/g, "-")}-cta`;
@@ -219,7 +223,8 @@ export function PricingCard({
           aria-disabled={isDisabled}
           render={
             <a
-              href={isDisabled ? undefined : ctaHref}
+              href={isDisabled ? undefined : ctaUrl || undefined}
+              target={ctaTarget}
               onClick={!isDisabled ? handleCta : undefined}
             />
           }

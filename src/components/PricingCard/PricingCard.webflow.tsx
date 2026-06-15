@@ -53,7 +53,7 @@ export default declareComponent(PricingCard, {
       defaultValue: "dark",
     }),
     ctaLabel: props.Text({ name: "CTA label", defaultValue: "Start free trial" }),
-    ctaHref: props.Text({ name: "CTA href", defaultValue: "#" }),
+    ctaHref: props.Link({ name: "CTA link" }),
     ctaTrackingId: props.Text({ name: "CTA tracking ID", defaultValue: "" }),
     compareLinkLabel: props.Text({
       name: "Compare link label",

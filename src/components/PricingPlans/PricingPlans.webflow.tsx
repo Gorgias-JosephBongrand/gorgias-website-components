@@ -31,22 +31,22 @@ export default declareComponent(PricingPlans, {
 
     // ── Starter CTA ──
     starterCtaLabel: props.Text({ name: "Starter · CTA label", defaultValue: "Start free trial" }),
-    starterCtaHref: props.Text({ name: "Starter · CTA link", defaultValue: "/signup" }),
+    starterCtaHref: props.Link({ name: "Starter · CTA link" }),
     starterAutomationRate: props.Number({ name: "Starter · Automation rate", defaultValue: 0 }),
 
     // ── Basic CTA ──
     basicCtaLabel: props.Text({ name: "Basic · CTA label", defaultValue: "Start free trial" }),
-    basicCtaHref: props.Text({ name: "Basic · CTA link", defaultValue: "/signup" }),
+    basicCtaHref: props.Link({ name: "Basic · CTA link" }),
     basicAutomationRate: props.Number({ name: "Basic · Automation rate", defaultValue: 15 }),
 
     // ── Pro CTA ──
     proCtaLabel: props.Text({ name: "Pro · CTA label", defaultValue: "Start free trial" }),
-    proCtaHref: props.Text({ name: "Pro · CTA link", defaultValue: "/signup" }),
+    proCtaHref: props.Link({ name: "Pro · CTA link" }),
     proAutomationRate: props.Number({ name: "Pro · Automation rate", defaultValue: 15 }),
 
     // ── Advanced CTA ──
     advancedCtaLabel: props.Text({ name: "Advanced · CTA label", defaultValue: "Talk to sales" }),
-    advancedCtaHref: props.Text({ name: "Advanced · CTA link", defaultValue: "/demo" }),
+    advancedCtaHref: props.Link({ name: "Advanced · CTA link" }),
     advancedAutomationRate: props.Number({ name: "Advanced · Automation rate", defaultValue: 15 }),
 
     showEnterprise: props.Boolean({
@@ -66,10 +66,7 @@ export default declareComponent(PricingPlans, {
       name: "Enterprise CTA label",
       defaultValue: "Talk to Sales",
     }),
-    enterpriseCtaHref: props.Text({
-      name: "Enterprise CTA href",
-      defaultValue: "/demo",
-    }),
+    enterpriseCtaHref: props.Link({ name: "Enterprise CTA link" }),
     emitJsonLd: props.Boolean({ name: "Emit JSON-LD", defaultValue: true }),
     productName: props.Text({
       name: "Product name (SEO)",

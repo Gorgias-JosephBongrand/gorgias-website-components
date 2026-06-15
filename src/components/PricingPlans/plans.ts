@@ -157,7 +157,7 @@ export function computeCardProps(
     aiAgentTooltip,
     ctaVariant: plan.ctaVariant,
     ctaLabel: plan.cta,
-    ctaHref: plan.ctaHref,
+    ctaHref: { href: plan.ctaHref },
     compareLinkLabel: "Compare all features ↓",
     compareLinkHref: "#compare",
   };

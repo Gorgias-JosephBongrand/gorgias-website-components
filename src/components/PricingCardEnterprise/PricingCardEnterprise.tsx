@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { CheckIcon } from "../../lib/icons";
 import { splitList } from "../../lib/parse";
+import { hrefOf, targetOf, type LinkValue } from "../../lib/link";
 
 const DEFAULT_FEATURES = [
   "SSO (SAML), audit logs, SCIM provisioning",
@@ -16,7 +17,8 @@ export interface PricingCardEnterpriseProps {
   title?: string;
   description?: string;
   ctaLabel?: string;
-  ctaHref?: string;
+  /** String (computed/preview) or a Webflow Link object */
+  ctaHref?: LinkValue;
   /** Array, or string separated by | ; or newline (Webflow text prop) */
   features?: string[] | string;
 }
@@ -25,10 +27,12 @@ export function PricingCardEnterprise({
   title = "Need a fully custom plan?",
   description = "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
   ctaLabel = "Talk to Sales",
-  ctaHref = "#",
+  ctaHref,
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {
   const featureList = typeof features === "string" ? splitList(features) : features;
+  const ctaUrl = hrefOf(ctaHref);
+  const ctaTarget = targetOf(ctaHref);
   return (
     <article className="grid w-full grid-cols-1 gap-8 rounded-2xl bg-white p-6 font-sans text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)] md:grid-cols-2 md:gap-12">
       <div className="flex flex-col items-start justify-between gap-6">
@@ -36,7 +40,7 @@ export function PricingCardEnterprise({
           <h3 className="m-0 text-lg font-medium leading-normal text-ink">{title}</h3>
           <p className="m-0 max-w-[480px] text-base leading-normal text-ink/75">{description}</p>
         </div>
-        <Button variant="brand-ghost" size="xl" nativeButton={false} render={<a href={ctaHref} />}>
+        <Button variant="brand-ghost" size="xl" nativeButton={false} render={<a href={ctaUrl || undefined} target={ctaTarget} />}>
           {ctaLabel}
         </Button>
       </div>

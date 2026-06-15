@@ -24,7 +24,7 @@ export default declareComponent(PricingCardEnterprise, {
         "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
     }),
     ctaLabel: props.Text({ name: "CTA label", defaultValue: "Talk to Sales" }),
-    ctaHref: props.Text({ name: "CTA href", defaultValue: "#" }),
+    ctaHref: props.Link({ name: "CTA link" }),
     features: props.Text({
       name: "Features, separated by |",
       defaultValue: DEFAULT_FEATURES,
