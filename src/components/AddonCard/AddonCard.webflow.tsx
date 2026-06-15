@@ -19,8 +19,8 @@ export default declareComponent(AddonCard, {
       defaultValue: "annual",
     }),
     defaultTierIndex: props.Number({
-      name: "Default tier index",
-      defaultValue: 4,
+      name: "Default tier index (-1 = none)",
+      defaultValue: -1,
     }),
     tiersJson: props.Text({
       name: "Tiers JSON (override)",

@@ -10,6 +10,17 @@ import { SMS_TIERS, VOICE_TIERS, parseTiers, tierRangeLabel, type Tier } from ".
 
 export type AddonKind = "voice" | "sms";
 
+/**
+ * Broadcast when an add-on's volume selection changes, so the plan-card
+ * CTAs (in PricingPlans, a separate shadow root) can fold it into their
+ * URLs. tickets = the selected tier's included volume, or null for "none".
+ */
+export const ADDON_EVENT = "gorgias:addon-change";
+export interface AddonSelectionDetail {
+  kind: AddonKind;
+  tickets: number | null;
+}
+
 /** Per-kind content defaults — any prop left blank falls back to these. */
 const KIND_DEFAULTS = {
   voice: {
@@ -54,7 +65,7 @@ export interface AddonCardProps {
   unit?: string;
   /** Initial billing cycle; syncs with every BillingToggle on the page */
   defaultBilling?: BillingCycle;
-  /** Initial dropdown tier index (0-based). Design default: 4 → 251–500 */
+  /** Initial dropdown tier index (0-based). -1 = "none" (default). */
   defaultTierIndex?: number;
   /** Optional tier-data override as JSON (same shape as the built-ins) */
   tiersJson?: string;
@@ -81,12 +92,15 @@ function TierDropdown({
   unit,
   value,
   onChange,
+  noneLabel,
 }: {
   tiers: Tier[];
   unit: string;
   value: number;
   onChange: (i: number) => void;
+  noneLabel: string;
 }) {
+  const labelFor = (i: number) => (i < 0 ? noneLabel : tierRangeLabel(tiers, i, unit));
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -121,7 +135,7 @@ function TierDropdown({
             : "[box-shadow:inset_0_0_0_1px_var(--color-line)]"
         )}
       >
-        <span>{tierRangeLabel(tiers, value, unit)}</span>
+        <span>{labelFor(value)}</span>
         <span
           className={cn(
             "inline-flex text-ink/75 transition-transform duration-100",
@@ -139,7 +153,7 @@ function TierDropdown({
           role="listbox"
           className="absolute inset-x-0 top-[calc(100%+4px)] z-20 max-h-[260px] overflow-y-auto rounded-lg border border-line bg-white p-1 [box-shadow:0_8px_20px_-8px_rgba(0,0,0,0.18),0_2px_4px_rgba(0,0,0,0.04)]"
         >
-          {tiers.map((_, i) => (
+          {[-1, ...tiers.map((_, i) => i)].map((i) => (
             <button
               key={i}
               type="button"
@@ -154,7 +168,7 @@ function TierDropdown({
                 i === value ? "bg-cream font-semibold" : "bg-transparent font-normal hover:bg-fog"
               )}
             >
-              {tierRangeLabel(tiers, i, unit)}
+              {labelFor(i)}
             </button>
           ))}
         </div>
@@ -188,7 +202,7 @@ export function AddonCard({
   tags = "",
   unit = "",
   defaultBilling = "annual",
-  defaultTierIndex = 4,
+  defaultTierIndex = -1,
   tiersJson = "",
 }: AddonCardProps) {
   const kindDefaults = KIND_DEFAULTS[kind === "sms" ? "sms" : "voice"];
@@ -196,14 +210,16 @@ export function AddonCard({
   const resolvedTagline = tagline.trim() || kindDefaults.tagline;
   const resolvedCounted = counted.trim() || kindDefaults.counted;
   const resolvedUnit = unit.trim() || kindDefaults.unit;
+  const noneLabel = `No ${resolvedTitle} tickets`;
 
   const [billing, setBilling] = useState<BillingCycle>(defaultBilling);
   const tiers = useMemo(
     () => parseTiers(tiersJson, kind === "voice" ? VOICE_TIERS : SMS_TIERS),
     [tiersJson, kind]
   );
+  // -1 = "none"; otherwise clamp into the tier range
   const [tierIdx, setTierIdx] = useState(() =>
-    Math.min(Math.max(defaultTierIndex, 0), tiers.length - 1)
+    defaultTierIndex < 0 ? -1 : Math.min(defaultTierIndex, tiers.length - 1)
   );
 
   // Sync with every BillingToggle on the page (cross shadow-root)
@@ -213,8 +229,16 @@ export function AddonCard({
     return () => window.removeEventListener(BILLING_EVENT, handler);
   }, []);
 
-  const tier = tiers[Math.min(tierIdx, tiers.length - 1)];
-  const rates = billing === "annual" ? tier.annual : tier.monthly;
+  const isNone = tierIdx < 0;
+  const tier = isNone ? null : tiers[Math.min(tierIdx, tiers.length - 1)];
+  const rates = tier ? (billing === "annual" ? tier.annual : tier.monthly) : null;
+
+  // Broadcast the selection to the plan-card CTAs (fires on mount + change)
+  useEffect(() => {
+    const detail: AddonSelectionDetail = { kind, tickets: tier ? tier.incl : null };
+    window.dispatchEvent(new CustomEvent<AddonSelectionDetail>(ADDON_EVENT, { detail }));
+  }, [kind, tier]);
+
   const customTags = typeof tags === "string" ? splitList(tags) : tags;
   const tagList = customTags.length > 0 ? customTags : kindDefaults.tags;
 
@@ -237,7 +261,7 @@ export function AddonCard({
       <div className="flex flex-col gap-4">
         <div className="flex items-end gap-2">
           <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
-            {fmtMoney(rates.base)}
+            {fmtMoney(rates ? rates.base : 0)}
           </span>
           <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
             /mo · {billing} pricing
@@ -251,14 +275,24 @@ export function AddonCard({
       {/* Volume estimate */}
       <div className="flex flex-col gap-2">
         <span className="text-base font-medium leading-normal text-ink">Estimate your volume</span>
-        <TierDropdown tiers={tiers} unit={resolvedUnit} value={tierIdx} onChange={setTierIdx} />
+        <TierDropdown
+          tiers={tiers}
+          unit={resolvedUnit}
+          value={tierIdx}
+          onChange={setTierIdx}
+          noneLabel={noneLabel}
+        />
       </div>
 
       {/* Included / Per ticket / Extra ticket */}
       <div className="grid grid-cols-3 gap-4">
-        <TierStat label="Included" value={`${fmtVol(tier.incl)} ${resolvedUnit}`} />
-        <TierStat label="Per ticket" value={fmtRate(rates.perTicket)} divider />
-        <TierStat label="Extra ticket" value={`${fmtRate(rates.overage)} each`} divider />
+        <TierStat label="Included" value={`${fmtVol(tier ? tier.incl : 0)} ${resolvedUnit}`} />
+        <TierStat label="Per ticket" value={rates ? fmtRate(rates.perTicket) : "—"} divider />
+        <TierStat
+          label="Extra ticket"
+          value={rates ? `${fmtRate(rates.overage)} each` : "—"}
+          divider
+        />
       </div>
 
       {/* Capability tags */}

@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BillingToggle, type BillingCycle } from "../BillingToggle/BillingToggle";
 import { AiAgentToggle } from "../AiAgentToggle/AiAgentToggle";
+import { ADDON_EVENT, type AddonSelectionDetail } from "../AddonCard/AddonCard";
 import { PricingCard } from "../PricingCard/PricingCard";
 import { PricingCardEnterprise } from "../PricingCardEnterprise/PricingCardEnterprise";
 import { buildCtaHref, buildJsonLd, computeCardProps, parsePlans } from "./plans";
@@ -101,6 +102,23 @@ export function PricingPlans({
     setSearch(window.location.search);
   }, []);
 
+  // Track add-on volume selections broadcast by AddonCard(s) on the page,
+  // so plan CTAs forward the chosen Voice/SMS volume. Updates live.
+  const [addonTickets, setAddonTickets] = useState<{ voice?: number; sms?: number }>({});
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { kind, tickets } = (e as CustomEvent<AddonSelectionDetail>).detail;
+      setAddonTickets((prev) => {
+        const next = { ...prev };
+        if (tickets && tickets > 0) next[kind] = tickets;
+        else delete next[kind];
+        return next;
+      });
+    };
+    window.addEventListener(ADDON_EVENT, handler);
+    return () => window.removeEventListener(ADDON_EVENT, handler);
+  }, []);
+
   const plans = useMemo(() => parsePlans(plansJson), [plansJson]);
 
   const ctaByKey: Record<string, PlanCtaConfig> = {
@@ -149,7 +167,12 @@ export function PricingPlans({
           const base = hrefOf(cfg.href) || plan.ctaHref;
           const href = buildCtaHref(
             base,
-            { automationRate: rate, planSelected: plan.key },
+            {
+              automationRate: rate,
+              planSelected: plan.key,
+              voiceTickets: addonTickets.voice,
+              smsTickets: addonTickets.sms,
+            },
             search
           );
           return (
