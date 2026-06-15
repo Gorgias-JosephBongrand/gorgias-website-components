@@ -41,7 +41,7 @@ export function Faq({ categories = "", itemsJson = "" }: FaqProps) {
               }}
               className={cn(
                 "flex h-12 cursor-pointer items-center justify-between gap-2 rounded-lg px-6 py-3 text-left font-sans text-base font-medium leading-normal text-ink transition-colors",
-                active ? "bg-white" : "border border-ink bg-transparent"
+                active ? "bg-white" : "bg-transparent hover:bg-white/50"
               )}
             >
               {c}
@@ -63,19 +63,28 @@ export function Faq({ categories = "", itemsJson = "" }: FaqProps) {
                 onClick={() => setOpen(isOpen ? -1 : i)}
                 className="flex cursor-pointer items-center justify-between gap-6 border-0 bg-transparent py-5 text-left font-sans"
               >
-                <span className="text-[28px] leading-[1.3] text-black">{it.q}</span>
+                <span className="text-2xl leading-[1.3] text-black">{it.q}</span>
                 <span
                   className={cn(
-                    "inline-flex size-10 shrink-0 items-center justify-center rounded-full text-[22px] font-light leading-none text-ink transition-transform duration-150 [box-shadow:inset_0_0_0_1.25px_#e6e1db]",
+                    "flex size-10 shrink-0 items-center justify-center rounded-full text-ink transition-transform duration-200 [box-shadow:inset_0_0_0_1.25px_#e6e1db]",
                     isOpen && "rotate-45"
                   )}
                 >
-                  +
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
                 </span>
               </button>
-              {isOpen && (
-                <div className="pb-6 pr-16 text-base leading-normal text-ink/75">{it.a}</div>
-              )}
+              <div
+                className={cn(
+                  "grid transition-[grid-template-rows] duration-300 ease-out",
+                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                )}
+              >
+                <div className="overflow-hidden">
+                  <div className="pb-6 pr-16 text-base leading-normal text-ink/75">{it.a}</div>
+                </div>
+              </div>
             </div>
           );
         })}
