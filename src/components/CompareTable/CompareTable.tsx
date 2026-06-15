@@ -102,7 +102,7 @@ function parseSections(json?: string): CompareSection[] {
 function Cell({ value }: { value: string }) {
   if (value === "check") {
     return (
-      <span className="inline-flex text-green">
+      <span className="inline-flex size-5 items-center justify-center rounded-full bg-green-soft text-green">
         <CheckIcon />
       </span>
     );
