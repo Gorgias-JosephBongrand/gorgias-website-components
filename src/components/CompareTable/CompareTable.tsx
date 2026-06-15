@@ -21,7 +21,7 @@ export const DEFAULT_SECTIONS: CompareSection[] = [
     rows: [
       ["Tickets included", "50/mo", "300/mo", "2,000/mo", "5,000/mo"],
       ["User seats", "3", "500", "500", "500"],
-      ["Overage", "$0.40/tkt", "$40/100", "$36/100", "$30/100"],
+      ["Overage", "$0.40/tkt", "$40/100", "$36/100", "$36/100"],
       ["API rate limit", "2 req/s", "2 req/s", "2 req/s", "2 req/s"],
     ],
   },
@@ -38,8 +38,11 @@ export const DEFAULT_SECTIONS: CompareSection[] = [
     title: "Channels & integrations",
     rows: [
       ["Email, chat, social, help center", "check", "check", "check", "check"],
-      ["Shopify, BigCommerce, Magento", "check", "check", "check", "check"],
-      ["150+ app integrations", "—", "check", "check", "check"],
+      ["Shopify / Shopify Plus", "check", "check", "check", "check"],
+      ["WooCommerce", "check", "check", "check", "check"],
+      ["BigCommerce", "—", "check", "check", "check"],
+      ["Magento", "—", "—", "check", "check"],
+      ["150+ app integrations", "check", "check", "check", "check"],
       ["Voice & SMS add-ons", "—", "check", "check", "check"],
     ],
   },
@@ -48,8 +51,8 @@ export const DEFAULT_SECTIONS: CompareSection[] = [
     rows: [
       ["Support performance", "check", "check", "check", "check"],
       ["Revenue attribution", "—", "—", "check", "check"],
-      ["Live statistics", "—", "check", "check", "check"],
-      ["Automation statistics", "—", "check", "check", "check"],
+      ["Live statistics", "check", "check", "check", "check"],
+      ["Automation statistics", "check", "check", "check", "check"],
     ],
   },
   {
@@ -64,7 +67,7 @@ export const DEFAULT_SECTIONS: CompareSection[] = [
   {
     title: "Security",
     rows: [
-      ["SSO (Google, Microsoft)", "—", "check", "check", "check"],
+      ["SSO (Google, Microsoft)", "check", "check", "check", "check"],
       ["Audit logs", "—", "—", "check", "check"],
       ["GDPR / CCPA compliance", "check", "check", "check", "check"],
     ],
