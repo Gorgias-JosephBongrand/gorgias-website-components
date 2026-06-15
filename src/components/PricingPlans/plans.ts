@@ -1,5 +1,7 @@
 import type { PricingCardProps } from "../PricingCard/PricingCard";
 import type { BillingCycle } from "../BillingToggle/BillingToggle";
+import { fmtMoney as fmt, fmtVol } from "../../lib/format";
+import { parseJsonArray } from "../../lib/parse";
 
 /*
  * Plan data model — single source of truth for the dynamic pricing section.
@@ -93,8 +95,6 @@ export const DEFAULT_PLANS: Plan[] = [
   },
 ];
 
-const fmt = (n: number) => "$" + n.toLocaleString("en-US");
-
 /** Mirrors PlanCard pricing logic from v2-plancard.jsx */
 export function computeCardProps(
   plan: Plan,
@@ -124,13 +124,13 @@ export function computeCardProps(
   const aiAgentNote = isStarter
     ? "Pay only when AI resolves a ticket. No monthly base."
     : aiOn
-    ? `~${plan.aiIncluded.toLocaleString("en-US")} automated interactions · at ${aiRate} per interaction`
+    ? `~${fmtVol(plan.aiIncluded)} automated interactions · at ${aiRate} per interaction`
     : "Optional — pay per resolved conversation. Add it anytime.";
 
   const aiAgentTooltip =
     isStarter || !aiOn
       ? ""
-      : `A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours. Your plan's base covers ~${plan.aiIncluded.toLocaleString("en-US")} a month, then ${aiRate} each.`;
+      : `A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours. Your plan's base covers ~${fmtVol(plan.aiIncluded)} a month, then ${aiRate} each.`;
 
   return {
     state: disabled ? "disabled" : plan.featured ? "featured" : "default",
@@ -158,16 +158,7 @@ export function computeCardProps(
 }
 
 /** Parse the Webflow-editable JSON prop; fall back to defaults on any error. */
-export function parsePlans(json?: string): Plan[] {
-  if (!json?.trim()) return DEFAULT_PLANS;
-  try {
-    const parsed = JSON.parse(json);
-    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_PLANS;
-    return parsed as Plan[];
-  } catch {
-    return DEFAULT_PLANS;
-  }
-}
+export const parsePlans = (json?: string): Plan[] => parseJsonArray(json, DEFAULT_PLANS);
 
 /**
  * schema.org Product + Offer markup from the same plan data.

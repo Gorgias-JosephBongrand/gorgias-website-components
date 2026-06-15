@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { parseJsonArray, splitList } from "../../lib/parse";
 
 /*
  * Plan comparison table — mirrored from v2-page.jsx CompareTable +
@@ -89,16 +90,8 @@ function CheckIcon() {
   );
 }
 
-function parseSections(json?: string): CompareSection[] {
-  if (!json?.trim()) return DEFAULT_SECTIONS;
-  try {
-    const parsed = JSON.parse(json);
-    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_SECTIONS;
-    return parsed as CompareSection[];
-  } catch {
-    return DEFAULT_SECTIONS;
-  }
-}
+const parseSections = (json?: string): CompareSection[] =>
+  parseJsonArray(json, DEFAULT_SECTIONS);
 
 function Cell({ value }: { value: string }) {
   if (value === "check") {
@@ -122,7 +115,7 @@ export function CompareTable({
 }: CompareTableProps) {
   const plans =
     typeof planNames === "string"
-      ? planNames.split(/\r?\n|\||;/).map((p) => p.trim()).filter(Boolean)
+      ? splitList(planNames)
       : planNames;
   const sections = parseSections(sectionsJson);
   const colCount = plans.length + 1;

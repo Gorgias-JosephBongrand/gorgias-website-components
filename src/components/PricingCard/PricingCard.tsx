@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { CheckIcon } from "../../lib/icons";
 
 export type PricingCardState = "default" | "featured" | "disabled";
 export type PricingCardCtaVariant = "dark" | "ghost";
@@ -40,14 +41,6 @@ export interface PricingCardProps {
   // Compare link
   compareLinkLabel?: string;
   compareLinkHref?: string;
-}
-
-function CheckIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-      <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
 }
 
 function InfoDot({ tooltip }: { tooltip: string }) {

@@ -175,13 +175,3 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
-export function parseFaq(json: string | undefined, fallback: FaqItem[]): FaqItem[] {
-  if (!json?.trim()) return fallback;
-  try {
-    const parsed = JSON.parse(json);
-    if (!Array.isArray(parsed) || parsed.length === 0) return fallback;
-    return parsed as FaqItem[];
-  } catch {
-    return fallback;
-  }
-}

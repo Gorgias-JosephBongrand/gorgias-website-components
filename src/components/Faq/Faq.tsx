@@ -2,7 +2,8 @@
 
 import React, { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
-import { FAQ_CATEGORIES, FAQ_ITEMS, parseFaq, type FaqItem } from "./faq-data";
+import { parseJsonArray, splitList } from "../../lib/parse";
+import { FAQ_CATEGORIES, FAQ_ITEMS, type FaqItem } from "./faq-data";
 
 export interface FaqProps {
   /** Category names — separate with | . Blank = built-in defaults. */
@@ -14,11 +15,11 @@ export interface FaqProps {
 export function Faq({ categories = "", itemsJson = "" }: FaqProps) {
   const cats = useMemo(() => {
     if (Array.isArray(categories)) return categories;
-    const parsed = categories.split(/\r?\n|\||;/).map((c) => c.trim()).filter(Boolean);
+    const parsed = splitList(categories);
     return parsed.length > 0 ? parsed : FAQ_CATEGORIES;
   }, [categories]);
 
-  const items = useMemo(() => parseFaq(itemsJson, FAQ_ITEMS), [itemsJson]);
+  const items = useMemo(() => parseJsonArray(itemsJson, FAQ_ITEMS), [itemsJson]);
 
   const [activeCat, setActiveCat] = useState(cats[0]);
   const [open, setOpen] = useState(0);

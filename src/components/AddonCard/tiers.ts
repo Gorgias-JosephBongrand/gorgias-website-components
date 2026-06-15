@@ -60,10 +60,11 @@ export const SMS_TIERS: Tier[] = [
   { incl: 55000, monthly: { base: 20900, perTicket: 0.38, overage: 0.76 }, annual: { base: 18667, perTicket: 0.32, overage: 0.76 } },
 ];
 
-export const fmtMoney = (n: number) => "$" + Number(n).toLocaleString("en-US");
-export const fmtRate = (n: number | null | undefined) =>
-  n == null ? "—" : "$" + n.toFixed(2);
-export const fmtVol = (n: number) => n.toLocaleString("en-US");
+// Re-exported for existing AddonCard imports — single definition lives in lib.
+export { fmtMoney, fmtRate, fmtVol } from "../../lib/format";
+
+import { fmtVol } from "../../lib/format";
+import { parseJsonArray } from "../../lib/parse";
 
 /** "251 – 500 calls / month" */
 export function tierRangeLabel(tiers: Tier[], i: number, unit: string) {
@@ -71,13 +72,5 @@ export function tierRangeLabel(tiers: Tier[], i: number, unit: string) {
   return `${fmtVol(prevIncl + 1)} – ${fmtVol(tiers[i].incl)} ${unit} / month`;
 }
 
-export function parseTiers(json: string | undefined, fallback: Tier[]): Tier[] {
-  if (!json?.trim()) return fallback;
-  try {
-    const parsed = JSON.parse(json);
-    if (!Array.isArray(parsed) || parsed.length === 0) return fallback;
-    return parsed as Tier[];
-  } catch {
-    return fallback;
-  }
-}
+export const parseTiers = (json: string | undefined, fallback: Tier[]) =>
+  parseJsonArray(json, fallback);

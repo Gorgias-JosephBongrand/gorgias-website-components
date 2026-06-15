@@ -1,5 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { CheckIcon } from "../../lib/icons";
+import { splitList } from "../../lib/parse";
 
 const DEFAULT_FEATURES = [
   "SSO (SAML), audit logs, SCIM provisioning",
@@ -19,14 +21,6 @@ export interface PricingCardEnterpriseProps {
   features?: string[] | string;
 }
 
-function CheckIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-      <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 export function PricingCardEnterprise({
   title = "Need a fully custom plan?",
   description = "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
@@ -34,10 +28,7 @@ export function PricingCardEnterprise({
   ctaHref = "#",
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {
-  const featureList =
-    typeof features === "string"
-      ? features.split(/\r?\n|\||;/).map((f) => f.trim()).filter(Boolean)
-      : features;
+  const featureList = typeof features === "string" ? splitList(features) : features;
   return (
     <article className="grid w-full grid-cols-1 gap-8 rounded-2xl bg-white p-6 font-sans text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)] md:grid-cols-2 md:gap-12">
       <div className="flex flex-col items-start justify-between gap-6">
