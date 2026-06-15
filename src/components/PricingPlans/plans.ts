@@ -27,6 +27,8 @@ export interface Plan {
   cta: string;
   ctaVariant: "dark" | "ghost";
   ctaHref: string;
+  /** Baked automation rate (%) applied when AI Agent is on; 0 when off. */
+  automationRate: number;
   /** Starter: monthly billing only, no AI base */
   starterOnly?: boolean;
   featured?: boolean;
@@ -46,7 +48,8 @@ export const DEFAULT_PLANS: Plan[] = [
     tickets: "50 tickets / month",
     cta: "Start free trial",
     ctaVariant: "ghost",
-    ctaHref: "#",
+    ctaHref: "/signup",
+    automationRate: 20,
     starterOnly: true,
   },
   {
@@ -61,7 +64,8 @@ export const DEFAULT_PLANS: Plan[] = [
     tickets: "300 tickets / month",
     cta: "Start free trial",
     ctaVariant: "dark",
-    ctaHref: "#",
+    ctaHref: "/signup",
+    automationRate: 30,
   },
   {
     key: "pro",
@@ -75,7 +79,8 @@ export const DEFAULT_PLANS: Plan[] = [
     tickets: "2,000 tickets / month",
     cta: "Start free trial",
     ctaVariant: "dark",
-    ctaHref: "#",
+    ctaHref: "/signup",
+    automationRate: 50,
     featured: true,
     badge: "Most popular · 12,600 brands",
   },
@@ -91,7 +96,8 @@ export const DEFAULT_PLANS: Plan[] = [
     tickets: "5,000 tickets / month",
     cta: "Talk to sales",
     ctaVariant: "ghost",
-    ctaHref: "#",
+    ctaHref: "/demo",
+    automationRate: 70,
   },
 ];
 
@@ -159,6 +165,29 @@ export function computeCardProps(
 
 /** Parse the Webflow-editable JSON prop; fall back to defaults on any error. */
 export const parsePlans = (json?: string): Plan[] => parseJsonArray(json, DEFAULT_PLANS);
+
+/**
+ * Build a CTA href that preserves incoming attribution params (ref,
+ * ref-position, etc. already on the page URL) and layers in the
+ * pricing params. Empty values are skipped. SSR-safe: when no current
+ * search is available, just the base + supplied params are emitted.
+ */
+export function buildCtaHref(
+  base: string,
+  params: Record<string, string | number | undefined>,
+  currentSearch = ""
+): string {
+  const [path, baseQuery = ""] = base.split("?");
+  const sp = new URLSearchParams(currentSearch);
+  // base may carry its own query — merge it in
+  new URLSearchParams(baseQuery).forEach((v, k) => sp.set(k, v));
+  for (const [k, v] of Object.entries(params)) {
+    if (v === undefined || v === "") continue;
+    sp.set(k, String(v));
+  }
+  const qs = sp.toString();
+  return qs ? `${path}?${qs}` : path;
+}
 
 /**
  * schema.org Product + Offer markup from the same plan data.

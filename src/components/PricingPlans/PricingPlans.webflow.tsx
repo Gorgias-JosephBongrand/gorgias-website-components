@@ -28,6 +28,27 @@ export default declareComponent(PricingPlans, {
       name: "AI toggle label",
       defaultValue: "Include AI Agent",
     }),
+
+    // ── Starter CTA ──
+    starterCtaLabel: props.Text({ name: "Starter · CTA label", defaultValue: "Start free trial" }),
+    starterCtaHref: props.Text({ name: "Starter · CTA link", defaultValue: "/signup" }),
+    starterAutomationRate: props.Number({ name: "Starter · Automation rate", defaultValue: 20 }),
+
+    // ── Basic CTA ──
+    basicCtaLabel: props.Text({ name: "Basic · CTA label", defaultValue: "Start free trial" }),
+    basicCtaHref: props.Text({ name: "Basic · CTA link", defaultValue: "/signup" }),
+    basicAutomationRate: props.Number({ name: "Basic · Automation rate", defaultValue: 30 }),
+
+    // ── Pro CTA ──
+    proCtaLabel: props.Text({ name: "Pro · CTA label", defaultValue: "Start free trial" }),
+    proCtaHref: props.Text({ name: "Pro · CTA link", defaultValue: "/signup" }),
+    proAutomationRate: props.Number({ name: "Pro · Automation rate", defaultValue: 50 }),
+
+    // ── Advanced CTA ──
+    advancedCtaLabel: props.Text({ name: "Advanced · CTA label", defaultValue: "Talk to sales" }),
+    advancedCtaHref: props.Text({ name: "Advanced · CTA link", defaultValue: "/demo" }),
+    advancedAutomationRate: props.Number({ name: "Advanced · Automation rate", defaultValue: 70 }),
+
     showEnterprise: props.Boolean({
       name: "Show enterprise card",
       defaultValue: true,
@@ -47,7 +68,7 @@ export default declareComponent(PricingPlans, {
     }),
     enterpriseCtaHref: props.Text({
       name: "Enterprise CTA href",
-      defaultValue: "#",
+      defaultValue: "/demo",
     }),
     emitJsonLd: props.Boolean({ name: "Emit JSON-LD", defaultValue: true }),
     productName: props.Text({
