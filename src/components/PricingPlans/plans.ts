@@ -42,14 +42,15 @@ export const DEFAULT_PLANS: Plan[] = [
     audience: "For smaller brands getting started on one platform.",
     helpdeskAnnual: 10,
     helpdeskMonthly: 10,
-    aiAnnual: 0,
-    aiMonthly: 0,
-    aiIncluded: 0,
+    // AI base prices are placeholders — confirm with PMM/billing.
+    aiAnnual: 2,
+    aiMonthly: 2,
+    aiIncluded: 8, // 15% of 50 tickets (rounded)
     tickets: "50 tickets / month",
     cta: "Start free trial",
     ctaVariant: "ghost",
     ctaHref: "/signup",
-    automationRate: 0,
+    automationRate: 15,
     starterOnly: true,
   },
   {
@@ -112,8 +113,8 @@ export function computeCardProps(
   const disabled = isStarter && isAnnual;
 
   const helpdesk = isAnnual ? plan.helpdeskAnnual : plan.helpdeskMonthly;
-  const aiBase = aiOn && !isStarter ? (isAnnual ? plan.aiAnnual : plan.aiMonthly) : 0;
-  const aiBaseMonthlyContract = aiOn && !isStarter ? plan.aiMonthly : 0;
+  const aiBase = aiOn ? (isAnnual ? plan.aiAnnual : plan.aiMonthly) : 0;
+  const aiBaseMonthlyContract = aiOn ? plan.aiMonthly : 0;
 
   const price = helpdesk + aiBase;
   const strikeFull = plan.helpdeskMonthly + aiBaseMonthlyContract;
@@ -122,9 +123,9 @@ export function computeCardProps(
 
   // AI Agent is a paid add-on on top of the ticket fee — never a standalone
   // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
-  // AI Agent is available on every plan. When it isn't included in the base,
-  // keep the row and turn it into an invite to add it (designer feedback).
-  const aiActive = aiOn && !isStarter;
+  // AI Agent is available on every plan (Starter included): when the toggle is
+  // on it's part of the base; off shows an invite to add it (designer feedback).
+  const aiActive = aiOn;
 
   // Included allowance surfaced in the "Included" list (like the ticket count).
   const aiResolvedLabel = aiActive ? `${fmtVol(plan.aiIncluded)} resolved conversations` : "";
