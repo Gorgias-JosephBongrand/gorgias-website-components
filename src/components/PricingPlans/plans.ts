@@ -122,6 +122,11 @@ export function computeCardProps(
   const price = helpdesk + aiBase;
   const yearlyBilled = price * 12;
 
+  // On annual, strike through the monthly-billing equivalent to emphasize the
+  // annual discount (e.g. "from $90 $77/mo").
+  const monthlyEquivalent = plan.helpdeskMonthly + (aiOn ? plan.aiMonthly : 0);
+  const showStrike = isAnnual && !isStarter && monthlyEquivalent > price;
+
   // AI Agent is a paid add-on on top of the ticket fee — never a standalone
   // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
   // AI Agent is available on every plan (Starter included): when the toggle is
@@ -157,7 +162,7 @@ export function computeCardProps(
     ctaNote,
     planName: plan.name,
     audience: plan.audience,
-    originalPrice: "",
+    originalPrice: showStrike ? fmt(monthlyEquivalent) : "",
     pricePrefix: "from",
     currentPrice: fmt(price),
     pricePeriod: "/mo",

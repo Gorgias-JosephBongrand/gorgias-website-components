@@ -22,13 +22,13 @@ export default declareComponent(PricingCard, {
       name: "Audience",
       defaultValue: "For growing stores handling up to 300 tickets/month",
     }),
-    originalPrice: props.Text({ name: "Original price", defaultValue: "" }),
+    originalPrice: props.Text({ name: "Original price", defaultValue: "$90" }),
     pricePrefix: props.Text({ name: "Price prefix", defaultValue: "from" }),
-    currentPrice: props.Text({ name: "Current price", defaultValue: "$50" }),
+    currentPrice: props.Text({ name: "Current price", defaultValue: "$77" }),
     pricePeriod: props.Text({ name: "Price period", defaultValue: "/mo" }),
     billingNote: props.Text({
       name: "Billing note",
-      defaultValue: "$600 billed annually",
+      defaultValue: "$924 billed annually",
     }),
     ticketLabel: props.Text({
       name: "Ticket label",
