@@ -42,10 +42,10 @@ export const DEFAULT_PLANS: Plan[] = [
     audience: "For smaller brands getting started on one platform.",
     helpdeskAnnual: 10,
     helpdeskMonthly: 10,
-    // AI base prices are placeholders — confirm with PMM/billing.
-    aiAnnual: 2,
-    aiMonthly: 2,
-    aiIncluded: 5, // 10% of 50 tickets
+    // AI Agent = minimum available tier per live page → CSV (USD-6).
+    aiAnnual: 27,   // Tier 1: 30 interactions x $0.90
+    aiMonthly: 30,  // Tier 1: 30 interactions x $1.00
+    aiIncluded: 30,
     tickets: "50 tickets / month",
     cta: "Start free trial",
     ctaVariant: "ghost",
@@ -59,9 +59,9 @@ export const DEFAULT_PLANS: Plan[] = [
     audience: "For growing brands whose support volume is outpacing their team.",
     helpdeskAnnual: 50,
     helpdeskMonthly: 60,
-    aiAnnual: 7,
-    aiMonthly: 9,
-    aiIncluded: 60, // 20% of 300 tickets
+    aiAnnual: 27,   // Tier 1: 30 interactions x $0.90
+    aiMonthly: 30,  // Tier 1: 30 interactions x $1.00
+    aiIncluded: 30,
     tickets: "300 tickets / month",
     cta: "Start free trial",
     ctaVariant: "ghost",
@@ -74,9 +74,9 @@ export const DEFAULT_PLANS: Plan[] = [
     audience: "For scaling brands that let AI resolve and sell, with revenue analytics.",
     helpdeskAnnual: 300,
     helpdeskMonthly: 360,
-    aiAnnual: 45,
-    aiMonthly: 54,
-    aiIncluded: 600, // 30% of 2,000 tickets
+    aiAnnual: 171,  // Tier 9: 190 interactions x $0.90
+    aiMonthly: 190, // Tier 9: 190 interactions x $1.00
+    aiIncluded: 190,
     tickets: "2,000 tickets / month",
     cta: "Start free trial",
     ctaVariant: "dark",
@@ -91,9 +91,9 @@ export const DEFAULT_PLANS: Plan[] = [
     audience: "For high-volume brands that need peak-ready automation and a dedicated team.",
     helpdeskAnnual: 750,
     helpdeskMonthly: 900,
-    aiAnnual: 112,
-    aiMonthly: 135,
-    aiIncluded: 1500, // 30% of 5,000 tickets
+    aiAnnual: 477,  // Tier 16: 530 interactions x $0.90
+    aiMonthly: 530, // Tier 16: 530 interactions x $1.00
+    aiIncluded: 530,
     tickets: "5,000 tickets / month",
     cta: "Talk to sales",
     ctaVariant: "ghost",
@@ -114,12 +114,13 @@ export function computeCardProps(
 
   const helpdesk = isAnnual ? plan.helpdeskAnnual : plan.helpdeskMonthly;
   const aiBase = aiOn ? (isAnnual ? plan.aiAnnual : plan.aiMonthly) : 0;
-  const aiBaseMonthlyContract = aiOn ? plan.aiMonthly : 0;
+  // Per-automated-interaction rate: $0.90 on annual contracts, $1.00 monthly.
+  const aiRate = isAnnual ? "$0.90" : "$1.00";
 
-  const price = helpdesk + aiBase;
-  const strikeFull = plan.helpdeskMonthly + aiBaseMonthlyContract;
-  const showStrike = isAnnual && !isStarter && strikeFull > price;
-  const yearlyBilled = price * 12;
+  // Headline = helpdesk only, shown as "from $X/mo"; AI Agent is a separate,
+  // optional line. Mirrors the live pricing page — no headline strikethrough.
+  const price = helpdesk;
+  const yearlyBilled = helpdesk * 12;
 
   // AI Agent is a paid add-on on top of the ticket fee — never a standalone
   // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
@@ -128,14 +129,14 @@ export function computeCardProps(
   const aiActive = aiOn;
 
   // Included allowance surfaced in the "Included" list (like the ticket count).
-  const aiResolvedLabel = aiActive ? `${fmtVol(plan.aiIncluded)} resolved conversations` : "";
+  const aiResolvedLabel = aiActive ? `${fmtVol(plan.aiIncluded)} automated interactions` : "";
   const aiAgentDisplayValue = aiActive ? `${fmt(aiBase)}/mo` : "";
   const aiAgentNote = aiActive
-    ? "Then a per-automated interaction fee."
+    ? `${aiRate} per automated interaction, then $1.50 over your tier.`
     : "Include AI Agent to start automating your support tickets.";
 
   const aiAgentTooltip = aiActive
-    ? `An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes ${fmtVol(plan.aiIncluded)} (${plan.automationRate}% of tickets); beyond that, a per-automated interaction fee applies.`
+    ? `An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. This tier includes ${fmtVol(plan.aiIncluded)} at ${aiRate} each; beyond it, $1.50 per interaction.`
     : "";
 
   // Helpdesk overage line, mirroring the AI Agent note for symmetry.
@@ -156,7 +157,8 @@ export function computeCardProps(
     ctaNote,
     planName: plan.name,
     audience: plan.audience,
-    originalPrice: showStrike ? fmt(strikeFull) : "",
+    originalPrice: "",
+    pricePrefix: "from",
     currentPrice: fmt(price),
     pricePeriod: "/mo",
     billingNote:
@@ -219,12 +221,12 @@ export function buildJsonLd(plans: Plan[], productName: string, productUrl: stri
       "@type": "Offer",
       name: p.name,
       description: p.audience,
-      price: String(p.helpdeskAnnual + (p.starterOnly ? 0 : p.aiAnnual)),
+      price: String(p.helpdeskAnnual),
       priceCurrency: "USD",
       url: p.ctaHref !== "#" ? p.ctaHref : productUrl,
       priceSpecification: {
         "@type": "UnitPriceSpecification",
-        price: String(p.helpdeskAnnual + (p.starterOnly ? 0 : p.aiAnnual)),
+        price: String(p.helpdeskAnnual),
         priceCurrency: "USD",
         unitText: "MONTH",
       },

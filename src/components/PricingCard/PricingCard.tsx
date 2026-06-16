@@ -21,6 +21,8 @@ export interface PricingCardProps {
 
   // Pricing — pass pre-formatted strings (e.g. "$345", "$414")
   originalPrice?: string;
+  /** Small qualifier shown before the price, e.g. "from" (AI Agent is extra) */
+  pricePrefix?: string;
   currentPrice?: string;
   pricePeriod?: string;
   billingNote?: string;
@@ -142,18 +144,19 @@ export function PricingCard({
   tagText,
   planName = "Basic",
   audience = "For growing stores handling up to 300 tickets/month",
-  originalPrice = "$69",
-  currentPrice = "$57",
+  originalPrice = "",
+  pricePrefix = "from",
+  currentPrice = "$50",
   pricePeriod = "/mo",
   billingNote = "$684 billed annually",
   ticketLabel = "300 tickets / month",
   helpdeskPrice = "$50/mo",
   helpdeskNote = "Then a per-ticket fee past your limit.",
-  aiResolvedLabel = "45 resolved conversations",
+  aiResolvedLabel = "30 automated interactions",
   showAiAgent = true,
-  aiAgentDisplayValue = "$7/mo",
-  aiAgentNote = "Then a per-automated interaction fee.",
-  aiAgentTooltip = "An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes a set number (15% of tickets); beyond that, a per-automated interaction fee applies.",
+  aiAgentDisplayValue = "$27/mo",
+  aiAgentNote = "$0.90 per automated interaction, then $1.50 over your tier.",
+  aiAgentTooltip = "An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. This tier includes 30 at $0.90 each; beyond it, $1.50 per interaction.",
   ctaVariant = "dark",
   ctaLabel = "Start free trial",
   ctaHref,
@@ -217,6 +220,11 @@ export function PricingCard({
 
         <div className="flex flex-col gap-2">
           <div className="flex items-end gap-2">
+            {pricePrefix && (
+              <span className="pb-[7px] text-base font-medium leading-normal text-ink/55">
+                {pricePrefix}
+              </span>
+            )}
             {originalPrice && (
               <span className="pb-1.5 text-xl font-medium leading-normal text-ink/65 line-through">
                 {originalPrice}
