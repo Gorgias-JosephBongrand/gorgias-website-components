@@ -117,10 +117,10 @@ export function computeCardProps(
   // Per-automated-interaction rate: $0.90 on annual contracts, $1.00 monthly.
   const aiRate = isAnnual ? "$0.90" : "$1.00";
 
-  // Headline = helpdesk only, shown as "from $X/mo"; AI Agent is a separate,
-  // optional line. Mirrors the live pricing page — no headline strikethrough.
-  const price = helpdesk;
-  const yearlyBilled = helpdesk * 12;
+  // Headline reflects the toggle: helpdesk only when AI Agent is off, helpdesk
+  // + the minimum AI tier when on. Shown as "from $X/mo" (usage scales up).
+  const price = helpdesk + aiBase;
+  const yearlyBilled = price * 12;
 
   // AI Agent is a paid add-on on top of the ticket fee — never a standalone
   // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
@@ -221,12 +221,12 @@ export function buildJsonLd(plans: Plan[], productName: string, productUrl: stri
       "@type": "Offer",
       name: p.name,
       description: p.audience,
-      price: String(p.helpdeskAnnual),
+      price: String(p.helpdeskAnnual + (p.starterOnly ? 0 : p.aiAnnual)),
       priceCurrency: "USD",
       url: p.ctaHref !== "#" ? p.ctaHref : productUrl,
       priceSpecification: {
         "@type": "UnitPriceSpecification",
-        price: String(p.helpdeskAnnual),
+        price: String(p.helpdeskAnnual + (p.starterOnly ? 0 : p.aiAnnual)),
         priceCurrency: "USD",
         unitText: "MONTH",
       },
