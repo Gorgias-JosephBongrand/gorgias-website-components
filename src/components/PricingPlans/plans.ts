@@ -45,12 +45,12 @@ export const DEFAULT_PLANS: Plan[] = [
     // AI base prices are placeholders — confirm with PMM/billing.
     aiAnnual: 2,
     aiMonthly: 2,
-    aiIncluded: 8, // 15% of 50 tickets (rounded)
+    aiIncluded: 5, // 10% of 50 tickets
     tickets: "50 tickets / month",
     cta: "Start free trial",
     ctaVariant: "ghost",
     ctaHref: "/signup",
-    automationRate: 15,
+    automationRate: 10,
     starterOnly: true,
   },
   {
@@ -61,12 +61,12 @@ export const DEFAULT_PLANS: Plan[] = [
     helpdeskMonthly: 60,
     aiAnnual: 7,
     aiMonthly: 9,
-    aiIncluded: 45,
+    aiIncluded: 60, // 20% of 300 tickets
     tickets: "300 tickets / month",
     cta: "Start free trial",
     ctaVariant: "ghost",
     ctaHref: "/signup",
-    automationRate: 15,
+    automationRate: 20,
   },
   {
     key: "pro",
@@ -76,12 +76,12 @@ export const DEFAULT_PLANS: Plan[] = [
     helpdeskMonthly: 360,
     aiAnnual: 45,
     aiMonthly: 54,
-    aiIncluded: 300,
+    aiIncluded: 600, // 30% of 2,000 tickets
     tickets: "2,000 tickets / month",
     cta: "Start free trial",
     ctaVariant: "dark",
     ctaHref: "/signup",
-    automationRate: 15,
+    automationRate: 30,
     featured: true,
     badge: "Most popular · 12,400+ brands",
   },
@@ -93,12 +93,12 @@ export const DEFAULT_PLANS: Plan[] = [
     helpdeskMonthly: 900,
     aiAnnual: 112,
     aiMonthly: 135,
-    aiIncluded: 750,
+    aiIncluded: 1500, // 30% of 5,000 tickets
     tickets: "5,000 tickets / month",
     cta: "Talk to sales",
     ctaVariant: "ghost",
     ctaHref: "/demo",
-    automationRate: 15,
+    automationRate: 30,
   },
 ];
 
@@ -135,7 +135,7 @@ export function computeCardProps(
     : "Include AI Agent to start automating your support tickets.";
 
   const aiAgentTooltip = aiActive
-    ? `An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes ${fmtVol(plan.aiIncluded)} (15% of tickets); beyond that, a per-automated interaction fee applies.`
+    ? `An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes ${fmtVol(plan.aiIncluded)} (${plan.automationRate}% of tickets); beyond that, a per-automated interaction fee applies.`
     : "";
 
   // Helpdesk overage line, mirroring the AI Agent note for symmetry.

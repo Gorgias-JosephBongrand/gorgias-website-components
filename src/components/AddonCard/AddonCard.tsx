@@ -30,10 +30,10 @@ const KIND_DEFAULTS = {
       "A conversation becomes a Voice ticket the moment a call connects. Unlimited follow-up calls on that ticket at no extra charge.",
     unit: "calls",
     tags: [
-      "Local & toll-free numbers, US + international",
-      "Call queues, IVR & smart routing",
-      "Recording & transcripts on every call",
-      "AI Agent voice handoff",
+      "Call queues with flexible routing",
+      "Call flows & IVR menus",
+      "Call recording & transcription",
+      "Voice tickets with ecommerce context",
     ],
   },
   sms: {
@@ -43,10 +43,10 @@ const KIND_DEFAULTS = {
       "A conversation becomes an SMS ticket the moment a text is exchanged. Unlimited follow-up texts on that ticket at no extra charge.",
     unit: "texts",
     tags: [
-      "Two-way texting in your helpdesk",
-      "MMS (image) support",
-      "Works with your marketing tools (Klaviyo, Attentive & more)",
-      "AI Agent answers on SMS",
+      "Two-way SMS in your helpdesk",
+      "MMS / media support",
+      "International sending coverage",
+      "Built-in opt-out compliance",
     ],
   },
 } as const;

@@ -32,22 +32,22 @@ export default declareComponent(PricingPlans, {
     // ── Starter CTA ──
     starterCtaLabel: props.Text({ name: "Starter · CTA label", defaultValue: "Start free trial" }),
     starterCtaHref: props.Link({ name: "Starter · CTA link" }),
-    starterAutomationRate: props.Number({ name: "Starter · Automation rate", defaultValue: 0 }),
+    starterAutomationRate: props.Number({ name: "Starter · Automation rate", defaultValue: 10 }),
 
     // ── Basic CTA ──
     basicCtaLabel: props.Text({ name: "Basic · CTA label", defaultValue: "Start free trial" }),
     basicCtaHref: props.Link({ name: "Basic · CTA link" }),
-    basicAutomationRate: props.Number({ name: "Basic · Automation rate", defaultValue: 15 }),
+    basicAutomationRate: props.Number({ name: "Basic · Automation rate", defaultValue: 20 }),
 
     // ── Pro CTA ──
     proCtaLabel: props.Text({ name: "Pro · CTA label", defaultValue: "Start free trial" }),
     proCtaHref: props.Link({ name: "Pro · CTA link" }),
-    proAutomationRate: props.Number({ name: "Pro · Automation rate", defaultValue: 15 }),
+    proAutomationRate: props.Number({ name: "Pro · Automation rate", defaultValue: 30 }),
 
     // ── Advanced CTA ──
     advancedCtaLabel: props.Text({ name: "Advanced · CTA label", defaultValue: "Talk to sales" }),
     advancedCtaHref: props.Link({ name: "Advanced · CTA link" }),
-    advancedAutomationRate: props.Number({ name: "Advanced · Automation rate", defaultValue: 15 }),
+    advancedAutomationRate: props.Number({ name: "Advanced · Automation rate", defaultValue: 30 }),
 
     showEnterprise: props.Boolean({
       name: "Show enterprise card",
