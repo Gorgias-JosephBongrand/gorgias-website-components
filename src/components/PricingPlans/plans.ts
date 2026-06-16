@@ -166,7 +166,6 @@ export function computeCardProps(
     planName: plan.name,
     audience: plan.audience,
     originalPrice: showStrike ? fmt(monthlyEquivalent) : "",
-    pricePrefix: "from",
     currentPrice: fmt(price),
     pricePeriod: "/mo",
     billingNote:

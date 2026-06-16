@@ -21,8 +21,6 @@ export interface PricingCardProps {
 
   // Pricing — pass pre-formatted strings (e.g. "$345", "$414")
   originalPrice?: string;
-  /** Small qualifier shown before the price, e.g. "from" (AI Agent is extra) */
-  pricePrefix?: string;
   currentPrice?: string;
   pricePeriod?: string;
   billingNote?: string;
@@ -145,7 +143,6 @@ export function PricingCard({
   planName = "Basic",
   audience = "For growing stores handling up to 300 tickets/month",
   originalPrice = "$90",
-  pricePrefix = "from",
   currentPrice = "$77",
   pricePeriod = "/mo",
   billingNote = "$924 billed annually",
@@ -219,25 +216,18 @@ export function PricingCard({
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-0.5">
+          <div className="flex items-end gap-2">
             {originalPrice && (
-              <span className="text-base font-medium leading-none text-ink/50 line-through">
+              <span className="pb-2.5 text-base font-medium leading-normal text-ink/45 line-through">
                 {originalPrice}
               </span>
             )}
-            <div className="flex items-end gap-2">
-              {pricePrefix && (
-                <span className="pb-[7px] text-base font-medium leading-normal text-ink/55">
-                  {pricePrefix}
-                </span>
-              )}
-              <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
-                {currentPrice}
-              </span>
-              <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
-                {pricePeriod}
-              </span>
-            </div>
+            <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
+              {currentPrice}
+            </span>
+            <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
+              {pricePeriod}
+            </span>
           </div>
           <p
             className={cn(

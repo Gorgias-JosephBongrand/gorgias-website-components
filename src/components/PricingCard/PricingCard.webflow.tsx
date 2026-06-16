@@ -23,7 +23,6 @@ export default declareComponent(PricingCard, {
       defaultValue: "For growing stores handling up to 300 tickets/month",
     }),
     originalPrice: props.Text({ name: "Original price", defaultValue: "$90" }),
-    pricePrefix: props.Text({ name: "Price prefix", defaultValue: "from" }),
     currentPrice: props.Text({ name: "Current price", defaultValue: "$77" }),
     pricePeriod: props.Text({ name: "Price period", defaultValue: "/mo" }),
     billingNote: props.Text({
