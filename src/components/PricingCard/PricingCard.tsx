@@ -28,6 +28,7 @@ export interface PricingCardProps {
   // Feature rows
   ticketLabel?: string;
   helpdeskPrice?: string;
+  helpdeskNote?: string;
   aiAgentDisplayValue?: string;
   aiAgentNote?: string;
   /** Tooltip body shown on the (i) info dot. Leave empty to hide the dot. */
@@ -124,9 +125,10 @@ export function PricingCard({
   billingNote = "$684 billed annually",
   ticketLabel = "300 tickets / month",
   helpdeskPrice = "$50/mo",
+  helpdeskNote = "Then a per-ticket fee past your limit.",
   aiAgentDisplayValue = "$7/mo",
-  aiAgentNote = "~45 automated interactions · at $0.90 per interaction",
-  aiAgentTooltip = "A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours.",
+  aiAgentNote = "Includes 45 resolved conversations, then a per-conversation fee.",
+  aiAgentTooltip = "A resolved conversation is what billing calls an automated interaction: one AI Agent fully handles with no human within 72 hours. The included count assumes a 15% automation rate. Past that, you pay a per-conversation fee.",
   ctaVariant = "dark",
   ctaLabel = "Start free trial",
   ctaHref,
@@ -195,7 +197,14 @@ export function PricingCard({
         <div className="flex flex-col gap-2 pt-1">
           <PlanRow label={ticketLabel} labelBold />
           <div className="h-px bg-line" />
-          <PlanRow label="Helpdesk" value={helpdeskPrice} />
+          <div className="flex flex-col gap-1">
+            <PlanRow label="Helpdesk" value={helpdeskPrice} />
+            {helpdeskNote && (
+              <span className="text-xs leading-normal tracking-[0.01em] text-ink/75">
+                {helpdeskNote}
+              </span>
+            )}
+          </div>
           <div className="h-px bg-line" />
           <div className="flex flex-col gap-1">
             <PlanRow

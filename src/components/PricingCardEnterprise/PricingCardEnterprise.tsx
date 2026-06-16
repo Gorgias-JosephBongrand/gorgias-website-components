@@ -6,11 +6,11 @@ import { hrefOf, targetOf, type LinkValue } from "../../lib/link";
 
 const DEFAULT_FEATURES = [
   "SSO (SAML), audit logs, SCIM provisioning",
-  "Unlimited Help Centers, API 4 req/sec",
-  "Custom DPA/MSA + security review support",
-  "Dedicated CSM + solutions architect",
-  "New Actions / deeper integrations & custom automations",
-  "Knowledge-gap and knowledge-conflict opportunities",
+  "Unlimited Help Centers, API at 4 requests per second",
+  "Custom DPA or MSA, plus security review support",
+  "Dedicated CSM and solutions architect",
+  "New Actions, deeper integrations, and custom automations",
+  "Proactive knowledge-gap detection that keeps AI answers accurate",
 ];
 
 export interface PricingCardEnterpriseProps {
@@ -25,8 +25,8 @@ export interface PricingCardEnterpriseProps {
 
 export function PricingCardEnterprise({
   title = "Need a fully custom plan?",
-  description = "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
-  ctaLabel = "Talk to Sales",
+  description = "For teams over 5,000 conversations a month with complex security, compliance, or integration needs.",
+  ctaLabel = "Talk to sales",
   ctaHref,
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {

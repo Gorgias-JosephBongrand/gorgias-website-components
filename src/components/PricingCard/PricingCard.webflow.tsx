@@ -34,18 +34,22 @@ export default declareComponent(PricingCard, {
       defaultValue: "300 tickets / month",
     }),
     helpdeskPrice: props.Text({ name: "Helpdesk price", defaultValue: "$50/mo" }),
+    helpdeskNote: props.Text({
+      name: "Helpdesk note",
+      defaultValue: "Then a per-ticket fee past your limit.",
+    }),
     aiAgentDisplayValue: props.Text({
       name: "AI Agent value",
       defaultValue: "$7/mo",
     }),
     aiAgentNote: props.Text({
       name: "AI Agent note",
-      defaultValue: "~45 automated interactions · at $0.90 per interaction",
+      defaultValue: "Includes 45 resolved conversations, then a per-conversation fee.",
     }),
     aiAgentTooltip: props.Text({
       name: "AI Agent tooltip",
       defaultValue:
-        "A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours.",
+        "A resolved conversation is what billing calls an automated interaction: one AI Agent fully handles with no human within 72 hours. The included count assumes a 15% automation rate. Past that, you pay a per-conversation fee.",
     }),
     ctaVariant: props.Variant({
       name: "CTA variant",

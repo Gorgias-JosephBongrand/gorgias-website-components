@@ -39,7 +39,7 @@ export const DEFAULT_PLANS: Plan[] = [
   {
     key: "starter",
     name: "Starter",
-    audience: "For small stores getting started with customer support",
+    audience: "For smaller brands getting started on one platform.",
     helpdeskAnnual: 10,
     helpdeskMonthly: 10,
     aiAnnual: 0,
@@ -55,7 +55,7 @@ export const DEFAULT_PLANS: Plan[] = [
   {
     key: "basic",
     name: "Basic",
-    audience: "For growing stores handling up to 300 tickets/month",
+    audience: "For growing brands whose support volume is outpacing their team.",
     helpdeskAnnual: 50,
     helpdeskMonthly: 60,
     aiAnnual: 7,
@@ -70,7 +70,7 @@ export const DEFAULT_PLANS: Plan[] = [
   {
     key: "pro",
     name: "Pro",
-    audience: "AI Agent on the front line, with revenue analytics behind it.",
+    audience: "For scaling brands that let AI resolve and sell, with the revenue analytics to prove it.",
     helpdeskAnnual: 300,
     helpdeskMonthly: 360,
     aiAnnual: 45,
@@ -82,12 +82,12 @@ export const DEFAULT_PLANS: Plan[] = [
     ctaHref: "/signup",
     automationRate: 15,
     featured: true,
-    badge: "Most popular · 12,600 brands",
+    badge: "Most popular · 12,400+ brands",
   },
   {
     key: "advanced",
     name: "Advanced",
-    audience: "High-volume AI scaling, with white-glove onboarding & analytics.",
+    audience: "For high-volume brands that need automation to hold up through peak, with a dedicated team behind it.",
     helpdeskAnnual: 750,
     helpdeskMonthly: 900,
     aiAnnual: 112,
@@ -119,24 +119,23 @@ export function computeCardProps(
   const strikeFull = plan.helpdeskMonthly + aiBaseMonthlyContract;
   const showStrike = isAnnual && !isStarter && strikeFull > price;
   const yearlyBilled = price * 12;
-  const aiRate = isAnnual && !isStarter ? "$0.90" : "$1.00";
 
-  const aiAgentDisplayValue = isStarter
-    ? "$1.00 / interaction"
-    : aiOn
-    ? `${fmt(aiBase)}/mo`
-    : `${aiRate} / interaction`;
+  // AI Agent is a paid add-on on top of the ticket fee — never a standalone
+  // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
+  const aiActive = aiOn && !isStarter;
 
-  const aiAgentNote = isStarter
-    ? "Pay only when AI resolves a ticket. No monthly base."
-    : aiOn
-    ? `~${fmtVol(plan.aiIncluded)} automated interactions · at ${aiRate} per interaction`
-    : "Optional — pay per resolved conversation. Add it anytime.";
+  const aiAgentDisplayValue = aiActive ? `${fmt(aiBase)}/mo` : "";
 
-  const aiAgentTooltip =
-    isStarter || !aiOn
-      ? ""
-      : `A conversation counts as one automated interaction when AI Agent fully resolves it with no human needed within 72 hours. Your plan's base covers ~${fmtVol(plan.aiIncluded)} a month, then ${aiRate} each.`;
+  const aiAgentNote = aiActive
+    ? `Includes ${fmtVol(plan.aiIncluded)} resolved conversations, then a per-conversation fee.`
+    : "Pay per conversation it resolves at your tier's rate. Add it anytime.";
+
+  const aiAgentTooltip = aiActive
+    ? `A resolved conversation is what billing calls an automated interaction: one AI Agent fully handles with no human within 72 hours. The included count assumes a 15% automation rate (${fmtVol(plan.aiIncluded)} of your ${plan.tickets}). Past that, you pay a per-conversation fee.`
+    : "";
+
+  // Helpdesk overage line, mirroring the AI Agent note for symmetry.
+  const helpdeskNote = "Then a per-ticket fee past your limit.";
 
   return {
     state: disabled ? "disabled" : plan.featured ? "featured" : "default",
@@ -152,6 +151,7 @@ export function computeCardProps(
         : `${fmt(yearlyBilled)} billed annually`,
     ticketLabel: plan.tickets,
     helpdeskPrice: `${fmt(helpdesk)}/mo`,
+    helpdeskNote,
     aiAgentDisplayValue,
     aiAgentNote,
     aiAgentTooltip,

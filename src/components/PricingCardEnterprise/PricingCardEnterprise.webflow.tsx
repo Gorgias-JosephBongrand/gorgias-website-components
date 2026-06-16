@@ -4,11 +4,11 @@ import { PricingCardEnterprise } from "./PricingCardEnterprise";
 
 const DEFAULT_FEATURES = [
   "SSO (SAML), audit logs, SCIM provisioning",
-  "Unlimited Help Centers, API 4 req/sec",
-  "Custom DPA/MSA + security review support",
-  "Dedicated CSM + solutions architect",
-  "New Actions / deeper integrations & custom automations",
-  "Knowledge-gap and knowledge-conflict opportunities",
+  "Unlimited Help Centers, API at 4 requests per second",
+  "Custom DPA or MSA, plus security review support",
+  "Dedicated CSM and solutions architect",
+  "New Actions, deeper integrations, and custom automations",
+  "Proactive knowledge-gap detection that keeps AI answers accurate",
 ].join(" | ");
 
 export default declareComponent(PricingCardEnterprise, {
@@ -21,9 +21,9 @@ export default declareComponent(PricingCardEnterprise, {
     description: props.Text({
       name: "Description",
       defaultValue:
-        "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
+        "For teams over 5,000 conversations a month with complex security, compliance, or integration needs.",
     }),
-    ctaLabel: props.Text({ name: "CTA label", defaultValue: "Talk to Sales" }),
+    ctaLabel: props.Text({ name: "CTA label", defaultValue: "Talk to sales" }),
     ctaHref: props.Link({ name: "CTA link" }),
     features: props.Text({
       name: "Features, separated by |",

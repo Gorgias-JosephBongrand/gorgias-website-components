@@ -26,7 +26,7 @@ export default declareComponent(PricingPlans, {
     annualLabel: props.Text({ name: "Annual label", defaultValue: "Annual" }),
     aiToggleLabel: props.Text({
       name: "AI toggle label",
-      defaultValue: "Include AI Agent",
+      defaultValue: "Add AI Agent",
     }),
 
     // ── Starter CTA ──
@@ -60,11 +60,11 @@ export default declareComponent(PricingPlans, {
     enterpriseDescription: props.Text({
       name: "Enterprise description",
       defaultValue:
-        "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
+        "For teams over 5,000 conversations a month with complex security, compliance, or integration needs.",
     }),
     enterpriseCtaLabel: props.Text({
       name: "Enterprise CTA label",
-      defaultValue: "Talk to Sales",
+      defaultValue: "Talk to sales",
     }),
     enterpriseCtaHref: props.Link({ name: "Enterprise CTA link" }),
     emitJsonLd: props.Boolean({ name: "Emit JSON-LD", defaultValue: true }),

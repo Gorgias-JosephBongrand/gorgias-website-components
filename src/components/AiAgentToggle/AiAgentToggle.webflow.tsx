@@ -8,7 +8,7 @@ export default declareComponent(AiAgentToggle, {
   group: "Pricing",
   props: {
     defaultOn: props.Boolean({ name: "Default on", defaultValue: true }),
-    label: props.Text({ name: "Label", defaultValue: "Include AI Agent" }),
+    label: props.Text({ name: "Label", defaultValue: "Add AI Agent" }),
   },
   options: {
     ssr: false,

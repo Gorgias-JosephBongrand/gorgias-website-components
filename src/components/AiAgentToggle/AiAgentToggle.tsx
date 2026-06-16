@@ -11,7 +11,7 @@ export interface AiAgentToggleProps {
 
 export function AiAgentToggle({
   defaultOn = true,
-  label = "Include AI Agent",
+  label = "Add AI Agent",
   onChange,
 }: AiAgentToggleProps) {
   const [on, setOn] = useState(defaultOn);

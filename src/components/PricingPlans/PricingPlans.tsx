@@ -65,7 +65,7 @@ export function PricingPlans({
   defaultAiOn = true,
   monthlyLabel = "Monthly",
   annualLabel = "Annual",
-  aiToggleLabel = "Include AI Agent",
+  aiToggleLabel = "Add AI Agent",
 
   starterCtaLabel = "Start free trial",
   starterCtaHref,
@@ -85,8 +85,8 @@ export function PricingPlans({
 
   showEnterprise = true,
   enterpriseTitle = "Need a fully custom plan?",
-  enterpriseDescription = "For teams over 5,000 conversations/month with complex security, compliance, or integration needs.",
-  enterpriseCtaLabel = "Talk to Sales",
+  enterpriseDescription = "For teams over 5,000 conversations a month with complex security, compliance, or integration needs.",
+  enterpriseCtaLabel = "Talk to sales",
   enterpriseCtaHref,
   emitJsonLd = true,
   productName = "Gorgias",
