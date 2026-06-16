@@ -219,23 +219,25 @@ export function PricingCard({
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex items-end gap-2">
-            {pricePrefix && (
-              <span className="pb-[7px] text-base font-medium leading-normal text-ink/55">
-                {pricePrefix}
-              </span>
-            )}
+          <div className="flex flex-col gap-0.5">
             {originalPrice && (
-              <span className="pb-1.5 text-xl font-medium leading-normal text-ink/65 line-through">
+              <span className="text-base font-medium leading-none text-ink/50 line-through">
                 {originalPrice}
               </span>
             )}
-            <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
-              {currentPrice}
-            </span>
-            <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
-              {pricePeriod}
-            </span>
+            <div className="flex items-end gap-2">
+              {pricePrefix && (
+                <span className="pb-[7px] text-base font-medium leading-normal text-ink/55">
+                  {pricePrefix}
+                </span>
+              )}
+              <span className="text-5xl font-medium leading-[1.2] tracking-[-0.01em] text-ink">
+                {currentPrice}
+              </span>
+              <span className="pb-[5px] text-lg font-medium leading-normal text-ink">
+                {pricePeriod}
+              </span>
+            </div>
           </div>
           <p
             className={cn(

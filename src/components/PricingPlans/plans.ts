@@ -111,11 +111,14 @@ export function computeCardProps(
   const isAnnual = billing === "annual";
   const isStarter = !!plan.starterOnly;
   const disabled = isStarter && isAnnual;
+  // Starter is monthly-only: its price must never react to the billing toggle,
+  // so it always uses monthly rates regardless of the selected cycle.
+  const useAnnual = isAnnual && !isStarter;
 
-  const helpdesk = isAnnual ? plan.helpdeskAnnual : plan.helpdeskMonthly;
-  const aiBase = aiOn ? (isAnnual ? plan.aiAnnual : plan.aiMonthly) : 0;
+  const helpdesk = useAnnual ? plan.helpdeskAnnual : plan.helpdeskMonthly;
+  const aiBase = aiOn ? (useAnnual ? plan.aiAnnual : plan.aiMonthly) : 0;
   // Per-automated-interaction rate: $0.90 on annual contracts, $1.00 monthly.
-  const aiRate = isAnnual ? "$0.90" : "$1.00";
+  const aiRate = useAnnual ? "$0.90" : "$1.00";
 
   // Headline reflects the toggle: helpdesk only when AI Agent is off, helpdesk
   // + the minimum AI tier when on. Shown as "from $X/mo" (usage scales up).
@@ -123,9 +126,9 @@ export function computeCardProps(
   const yearlyBilled = price * 12;
 
   // On annual, strike through the monthly-billing equivalent to emphasize the
-  // annual discount (e.g. "from $90 $77/mo").
+  // annual discount (e.g. "from $90 $77/mo"). Never for Starter (monthly-only).
   const monthlyEquivalent = plan.helpdeskMonthly + (aiOn ? plan.aiMonthly : 0);
-  const showStrike = isAnnual && !isStarter && monthlyEquivalent > price;
+  const showStrike = useAnnual && monthlyEquivalent > price;
 
   // AI Agent is a paid add-on on top of the ticket fee — never a standalone
   // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
