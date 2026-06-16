@@ -19,6 +19,8 @@ export interface PricingCardEnterpriseProps {
   ctaLabel?: string;
   /** String (computed/preview) or a Webflow Link object */
   ctaHref?: LinkValue;
+  /** Supporting text under the CTA */
+  ctaNote?: string;
   /** Array, or string separated by | ; or newline (Webflow text prop) */
   features?: string[] | string;
 }
@@ -28,6 +30,7 @@ export function PricingCardEnterprise({
   description = "For teams over 5,000 conversations a month with complex security, compliance, or integration needs.",
   ctaLabel = "Talk to sales",
   ctaHref,
+  ctaNote = "Book a 30-minute call",
   features = DEFAULT_FEATURES,
 }: PricingCardEnterpriseProps) {
   const featureList = typeof features === "string" ? splitList(features) : features;
@@ -40,9 +43,12 @@ export function PricingCardEnterprise({
           <h3 className="m-0 text-lg font-medium leading-normal text-ink">{title}</h3>
           <p className="m-0 max-w-[480px] text-base leading-normal text-ink/75">{description}</p>
         </div>
-        <Button variant="brand-ghost" size="xl" nativeButton={false} render={<a href={ctaUrl || undefined} target={ctaTarget} />}>
-          {ctaLabel}
-        </Button>
+        <div className="flex flex-col items-start gap-1.5">
+          <Button variant="brand-ghost" size="xl" nativeButton={false} render={<a href={ctaUrl || undefined} target={ctaTarget} />}>
+            {ctaLabel}
+          </Button>
+          {ctaNote && <span className="text-xs leading-normal text-ink/55">{ctaNote}</span>}
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 pt-1">

@@ -25,6 +25,7 @@ export default declareComponent(PricingCardEnterprise, {
     }),
     ctaLabel: props.Text({ name: "CTA label", defaultValue: "Talk to sales" }),
     ctaHref: props.Link({ name: "CTA link" }),
+    ctaNote: props.Text({ name: "CTA note", defaultValue: "Book a 30-minute call" }),
     features: props.Text({
       name: "Features, separated by |",
       defaultValue: DEFAULT_FEATURES,

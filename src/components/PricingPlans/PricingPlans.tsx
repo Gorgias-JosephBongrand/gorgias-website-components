@@ -57,6 +57,9 @@ export interface PricingPlansProps {
   emitJsonLd?: boolean;
   productName?: string;
   productUrl?: string;
+
+  /** Text-hierarchy treatment passed to each card (prototype A/B) */
+  hierarchy?: "v1" | "v2";
 }
 
 export function PricingPlans({
@@ -91,6 +94,7 @@ export function PricingPlans({
   emitJsonLd = true,
   productName = "Gorgias",
   productUrl = "https://www.gorgias.com/pricing",
+  hierarchy = "v2",
 }: PricingPlansProps) {
   const [billing, setBilling] = useState<BillingCycle>(defaultBilling);
   const [aiOn, setAiOn] = useState(defaultAiOn);
@@ -181,6 +185,7 @@ export function PricingPlans({
               {...computeCardProps(plan, billing, aiOn)}
               ctaLabel={cfg.label || plan.cta}
               ctaHref={{ href }}
+              hierarchy={hierarchy}
             />
           );
         })}

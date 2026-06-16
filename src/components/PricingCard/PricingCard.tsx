@@ -29,6 +29,10 @@ export interface PricingCardProps {
   ticketLabel?: string;
   helpdeskPrice?: string;
   helpdeskNote?: string;
+  /** AI Agent resolved-conversation allowance, shown in the Included list */
+  aiResolvedLabel?: string;
+  /** Whether the AI Agent row is shown at all (removed when not included) */
+  showAiAgent?: boolean;
   aiAgentDisplayValue?: string;
   aiAgentNote?: string;
   /** Tooltip body shown on the (i) info dot. Leave empty to hide the dot. */
@@ -39,11 +43,16 @@ export interface PricingCardProps {
   ctaLabel?: string;
   /** String (computed/preview) or a Webflow Link object */
   ctaHref?: LinkValue;
+  /** Supporting text under the CTA (constraints / reassurance) */
+  ctaNote?: string;
   ctaTrackingId?: string;
 
   // Compare link (in-page anchor)
   compareLinkLabel?: string;
   compareLinkHref?: string;
+
+  /** "v2" applies the stronger text-hierarchy treatment (prototype) */
+  hierarchy?: "v1" | "v2";
 }
 
 function InfoDot({ tooltip }: { tooltip: string }) {
@@ -83,11 +92,13 @@ function PlanRow({
   labelBold,
   info,
   value,
+  v2,
 }: {
   label: string;
   labelBold?: boolean;
   info?: React.ReactNode;
   value?: string;
+  v2?: boolean;
 }) {
   return (
     <div className="flex min-h-6 items-center justify-between gap-3">
@@ -98,7 +109,13 @@ function PlanRow({
         <span
           className={cn(
             "whitespace-nowrap text-sm leading-normal tracking-[0.01em]",
-            labelBold ? "font-bold text-ink" : "font-normal text-ink/75"
+            labelBold
+              ? v2
+                ? "font-semibold text-ink"
+                : "font-bold text-ink"
+              : v2
+              ? "font-normal text-ink/60"
+              : "font-normal text-ink/75"
           )}
         >
           {label}
@@ -106,7 +123,13 @@ function PlanRow({
         {info}
       </span>
       {value && (
-        <span className="whitespace-nowrap text-right text-sm font-bold leading-normal text-ink">
+        <span
+          className={cn(
+            "whitespace-nowrap text-right text-sm leading-normal text-ink",
+            // v2: de-bold the $ values so the allowances lead the block
+            v2 ? "font-medium" : "font-bold"
+          )}
+        >
           {value}
         </span>
       )}
@@ -126,19 +149,25 @@ export function PricingCard({
   ticketLabel = "300 tickets / month",
   helpdeskPrice = "$50/mo",
   helpdeskNote = "Then a per-ticket fee past your limit.",
+  aiResolvedLabel = "45 resolved conversations",
+  showAiAgent = true,
   aiAgentDisplayValue = "$7/mo",
-  aiAgentNote = "Includes 45 resolved conversations, then a per-conversation fee.",
-  aiAgentTooltip = "A resolved conversation is what billing calls an automated interaction: one AI Agent fully handles with no human within 72 hours. The included count assumes a 15% automation rate. Past that, you pay a per-conversation fee.",
+  aiAgentNote = "Then a per-automated interaction fee.",
+  aiAgentTooltip = "An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes a set number (15% of tickets); beyond that, a per-automated interaction fee applies.",
   ctaVariant = "dark",
   ctaLabel = "Start free trial",
   ctaHref,
+  ctaNote = "No credit card required",
   ctaTrackingId,
   compareLinkLabel = "Compare all features ↓",
   compareLinkHref = "#compare",
+  hierarchy = "v2",
 }: PricingCardProps) {
+  const v2 = hierarchy === "v2";
   const isDisabled = state === "disabled";
   const isFeatured = state === "featured";
-  const showTag = !!tagText && (isFeatured || isDisabled);
+  // Banner reserved for the featured promo only; constraints go under the CTA.
+  const showTag = !!tagText && isFeatured;
   const ctaUrl = hrefOf(ctaHref);
   const ctaTarget = targetOf(ctaHref);
 
@@ -154,6 +183,7 @@ export function PricingCard({
     <article
       className={cn(
         "relative flex w-full flex-col gap-8 rounded-2xl bg-white px-6 pb-6 pt-10 font-sans text-base leading-normal text-ink antialiased [box-shadow:inset_0_0_0_1px_var(--color-line)] transition-opacity",
+        v2 && "gap-9",
         isDisabled && "pointer-events-none opacity-35"
       )}
     >
@@ -167,8 +197,20 @@ export function PricingCard({
       {/* Header: name + audience + price */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h3 className="m-0 text-lg font-medium leading-normal text-ink">{planName}</h3>
-          <p className="m-0 min-h-[42px] text-sm leading-normal tracking-[0.01em] text-ink/75">
+          <h3
+            className={cn(
+              "m-0 leading-normal text-ink",
+              v2 ? "text-xl font-semibold" : "text-lg font-medium"
+            )}
+          >
+            {planName}
+          </h3>
+          <p
+            className={cn(
+              "m-0 min-h-[42px] text-sm leading-normal tracking-[0.01em]",
+              v2 ? "text-ink/60" : "text-ink/75"
+            )}
+          >
             {audience}
           </p>
         </div>
@@ -187,62 +229,104 @@ export function PricingCard({
               {pricePeriod}
             </span>
           </div>
-          <p className="m-0 text-base leading-normal text-ink/75">{billingNote}</p>
+          <p
+            className={cn(
+              "m-0 leading-normal",
+              v2 ? "text-sm text-ink/45" : "text-base text-ink/75"
+            )}
+          >
+            {billingNote}
+          </p>
         </div>
       </div>
 
       {/* Included feature list */}
       <div className="flex flex-col gap-1">
-        <span className="text-sm leading-normal tracking-[0.01em] text-ink/75">Included</span>
+        <span
+          className={cn(
+            "leading-normal",
+            v2
+              ? "text-[11px] font-semibold uppercase tracking-wider text-ink/45"
+              : "text-sm tracking-[0.01em] text-ink/75"
+          )}
+        >
+          Included
+        </span>
         <div className="flex flex-col gap-2 pt-1">
-          <PlanRow label={ticketLabel} labelBold />
+          <PlanRow label={ticketLabel} labelBold v2={v2} />
+          {aiResolvedLabel && <PlanRow label={aiResolvedLabel} labelBold v2={v2} />}
           <div className="h-px bg-line" />
           <div className="flex flex-col gap-1">
-            <PlanRow label="Helpdesk" value={helpdeskPrice} />
+            <PlanRow label="Helpdesk" value={helpdeskPrice} v2={v2} />
             {helpdeskNote && (
-              <span className="text-xs leading-normal tracking-[0.01em] text-ink/75">
+              <span
+                className={cn(
+                  "text-xs leading-normal tracking-[0.01em]",
+                  v2 ? "text-ink/45" : "text-ink/55"
+                )}
+              >
                 {helpdeskNote}
               </span>
             )}
           </div>
-          <div className="h-px bg-line" />
-          <div className="flex flex-col gap-1">
-            <PlanRow
-              label="AI Agent"
-              info={aiAgentTooltip ? <InfoDot tooltip={aiAgentTooltip} /> : undefined}
-              value={aiAgentDisplayValue}
-            />
-            {aiAgentNote && (
-              <span className="text-xs leading-normal tracking-[0.01em] text-ink/75">
-                {aiAgentNote}
-              </span>
-            )}
-          </div>
+          {showAiAgent && (
+            <>
+              <div className="h-px bg-line" />
+              <div className="flex flex-col gap-1">
+                <PlanRow
+                  label="AI Agent"
+                  info={aiAgentTooltip ? <InfoDot tooltip={aiAgentTooltip} /> : undefined}
+                  value={aiAgentDisplayValue}
+                  v2={v2}
+                />
+                {aiAgentNote && (
+                  <span
+                    className={cn(
+                      "text-xs leading-normal tracking-[0.01em]",
+                      v2 ? "text-ink/45" : "text-ink/55"
+                    )}
+                  >
+                    {aiAgentNote}
+                  </span>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* CTA */}
       <div className="mt-auto flex flex-col items-center gap-4">
-        <Button
-          variant={ctaVariant === "ghost" ? "brand-ghost" : "brand-dark"}
-          size="xl"
-          className="w-full"
-          nativeButton={false}
-          aria-disabled={isDisabled}
-          render={
-            <a
-              href={isDisabled ? undefined : ctaUrl || undefined}
-              target={ctaTarget}
-              onClick={!isDisabled ? handleCta : undefined}
-            />
-          }
-        >
-          {ctaLabel}
-        </Button>
+        <div className="flex w-full flex-col items-center gap-1.5">
+          <Button
+            variant={ctaVariant === "ghost" ? "brand-ghost" : "brand-dark"}
+            size="xl"
+            className="w-full"
+            nativeButton={false}
+            aria-disabled={isDisabled}
+            render={
+              <a
+                href={isDisabled ? undefined : ctaUrl || undefined}
+                target={ctaTarget}
+                onClick={!isDisabled ? handleCta : undefined}
+              />
+            }
+          >
+            {ctaLabel}
+          </Button>
+          {ctaNote && (
+            <span className={cn("text-xs leading-normal", v2 ? "text-ink/45" : "text-ink/55")}>
+              {ctaNote}
+            </span>
+          )}
+        </div>
         {compareLinkLabel && (
           <a
             href={compareLinkHref}
-            className="inline-flex cursor-pointer items-center gap-1 text-base font-medium text-ink/75 no-underline hover:text-ink"
+            className={cn(
+              "inline-flex cursor-pointer items-center gap-1 font-medium no-underline hover:text-ink",
+              v2 ? "text-sm text-ink/45" : "text-base text-ink/75"
+            )}
           >
             {compareLinkLabel}
           </a>

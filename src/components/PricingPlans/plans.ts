@@ -63,14 +63,14 @@ export const DEFAULT_PLANS: Plan[] = [
     aiIncluded: 45,
     tickets: "300 tickets / month",
     cta: "Start free trial",
-    ctaVariant: "dark",
+    ctaVariant: "ghost",
     ctaHref: "/signup",
     automationRate: 15,
   },
   {
     key: "pro",
     name: "Pro",
-    audience: "For scaling brands that let AI resolve and sell, with the revenue analytics to prove it.",
+    audience: "For scaling brands that let AI resolve and sell, with revenue analytics.",
     helpdeskAnnual: 300,
     helpdeskMonthly: 360,
     aiAnnual: 45,
@@ -87,7 +87,7 @@ export const DEFAULT_PLANS: Plan[] = [
   {
     key: "advanced",
     name: "Advanced",
-    audience: "For high-volume brands that need automation to hold up through peak, with a dedicated team behind it.",
+    audience: "For high-volume brands that need peak-ready automation and a dedicated team.",
     helpdeskAnnual: 750,
     helpdeskMonthly: 900,
     aiAnnual: 112,
@@ -122,24 +122,37 @@ export function computeCardProps(
 
   // AI Agent is a paid add-on on top of the ticket fee — never a standalone
   // "pay-as-you-go" plan, never "no monthly base" (per PMM billing review).
+  // AI Agent is available on every plan. When it isn't included in the base,
+  // keep the row and turn it into an invite to add it (designer feedback).
   const aiActive = aiOn && !isStarter;
 
+  // Included allowance surfaced in the "Included" list (like the ticket count).
+  const aiResolvedLabel = aiActive ? `${fmtVol(plan.aiIncluded)} resolved conversations` : "";
   const aiAgentDisplayValue = aiActive ? `${fmt(aiBase)}/mo` : "";
-
   const aiAgentNote = aiActive
-    ? `Includes ${fmtVol(plan.aiIncluded)} resolved conversations, then a per-conversation fee.`
-    : "Pay per conversation it resolves at your tier's rate. Add it anytime.";
+    ? "Then a per-automated interaction fee."
+    : "Include AI Agent to start automating your support tickets.";
 
   const aiAgentTooltip = aiActive
-    ? `A resolved conversation is what billing calls an automated interaction: one AI Agent fully handles with no human within 72 hours. The included count assumes a 15% automation rate (${fmtVol(plan.aiIncluded)} of your ${plan.tickets}). Past that, you pay a per-conversation fee.`
+    ? `An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes ${fmtVol(plan.aiIncluded)} (15% of tickets); beyond that, a per-automated interaction fee applies.`
     : "";
 
   // Helpdesk overage line, mirroring the AI Agent note for symmetry.
   const helpdeskNote = "Then a per-ticket fee past your limit.";
 
+  // The top banner is reserved for the featured promo only. Constraints and
+  // reassurances live as supporting text below the CTA (designer feedback).
+  const isTrial = /trial/i.test(plan.cta);
+  const ctaNote = disabled
+    ? "Monthly billing only"
+    : isTrial
+    ? "No credit card required"
+    : "Book a 30-minute call";
+
   return {
     state: disabled ? "disabled" : plan.featured ? "featured" : "default",
-    tagText: disabled ? "Monthly billing only" : plan.featured ? plan.badge : "",
+    tagText: plan.featured ? plan.badge ?? "" : "",
+    ctaNote,
     planName: plan.name,
     audience: plan.audience,
     originalPrice: showStrike ? fmt(strikeFull) : "",
@@ -152,6 +165,7 @@ export function computeCardProps(
     ticketLabel: plan.tickets,
     helpdeskPrice: `${fmt(helpdesk)}/mo`,
     helpdeskNote,
+    aiResolvedLabel,
     aiAgentDisplayValue,
     aiAgentNote,
     aiAgentTooltip,

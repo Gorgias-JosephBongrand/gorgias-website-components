@@ -38,18 +38,23 @@ export default declareComponent(PricingCard, {
       name: "Helpdesk note",
       defaultValue: "Then a per-ticket fee past your limit.",
     }),
+    aiResolvedLabel: props.Text({
+      name: "AI resolved-conversations label",
+      defaultValue: "45 resolved conversations",
+    }),
+    showAiAgent: props.Boolean({ name: "Show AI Agent row", defaultValue: true }),
     aiAgentDisplayValue: props.Text({
       name: "AI Agent value",
       defaultValue: "$7/mo",
     }),
     aiAgentNote: props.Text({
       name: "AI Agent note",
-      defaultValue: "Includes 45 resolved conversations, then a per-conversation fee.",
+      defaultValue: "Then a per-automated interaction fee.",
     }),
     aiAgentTooltip: props.Text({
       name: "AI Agent tooltip",
       defaultValue:
-        "A resolved conversation is what billing calls an automated interaction: one AI Agent fully handles with no human within 72 hours. The included count assumes a 15% automation rate. Past that, you pay a per-conversation fee.",
+        "An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. Your plan includes a set number (15% of tickets); beyond that, a per-automated interaction fee applies.",
     }),
     ctaVariant: props.Variant({
       name: "CTA variant",
@@ -58,6 +63,7 @@ export default declareComponent(PricingCard, {
     }),
     ctaLabel: props.Text({ name: "CTA label", defaultValue: "Start free trial" }),
     ctaHref: props.Link({ name: "CTA link" }),
+    ctaNote: props.Text({ name: "CTA note", defaultValue: "No credit card required" }),
     ctaTrackingId: props.Text({ name: "CTA tracking ID", defaultValue: "" }),
     compareLinkLabel: props.Text({
       name: "Compare link label",
