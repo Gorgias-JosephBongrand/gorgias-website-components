@@ -141,8 +141,7 @@ export function CompareTable({
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-medium leading-normal text-ink">{name}</span>
                     {i === featuredIndex && featuredBadge && (
-                      <span className="inline-flex items-center gap-[5px] whitespace-nowrap rounded-full bg-fog px-2.5 py-0.5 text-xs font-medium text-ink">
-                        <span className="size-1 rounded-full bg-coral" />
+                      <span className="inline-flex items-center whitespace-nowrap rounded-full bg-fog px-2.5 py-0.5 text-xs font-medium text-ink">
                         {featuredBadge}
                       </span>
                     )}

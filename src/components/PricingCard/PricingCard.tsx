@@ -157,8 +157,7 @@ export function PricingCard({
     >
       {/* Tag strip */}
       {showTag && (
-        <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center gap-2 rounded-t-2xl border border-line bg-fog">
-          <span className="size-1.5 shrink-0 rounded-full bg-coral" />
+        <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center rounded-t-2xl border border-line bg-fog">
           <span className="text-[13px] font-medium leading-none text-ink">{tagText}</span>
         </div>
       )}

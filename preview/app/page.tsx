@@ -2,10 +2,13 @@ import { PricingPlans } from "../../src/components/PricingPlans/PricingPlans";
 import { AddonCard } from "../../src/components/AddonCard/AddonCard";
 import { CompareTable } from "../../src/components/CompareTable/CompareTable";
 import { Faq } from "../../src/components/Faq/Faq";
+import { Navbar } from "../../src/components/Navbar/Navbar";
 
 export default function PreviewPage() {
   return (
     <main style={{ background: "#ffffff", minHeight: "100vh", padding: "48px 24px" }}>
+      <Navbar />
+      <div style={{ height: 96 }} />
       <h1 style={{ textAlign: "center", marginBottom: 40, fontSize: 20, fontWeight: 600, color: "#1a1e23" }}>
         Pricing Cards — Component Preview
       </h1>
