@@ -147,7 +147,7 @@ export function computeCardProps(
   const aiAgentDisplayValue = aiActive ? `${fmt(aiBase)}/mo` : "";
   const aiAgentNote = aiActive
     ? "Then a $1.50 per automated interaction fee past your limit."
-    : "Include AI Agent to start automating your support tickets.";
+    : "Add AI Agent to start automating your support tickets.";
 
   const aiAgentTooltip = aiActive
     ? `An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. This tier includes ${fmtVol(plan.aiIncluded)} at ${aiRate} each; beyond it, $1.50 per interaction.`
