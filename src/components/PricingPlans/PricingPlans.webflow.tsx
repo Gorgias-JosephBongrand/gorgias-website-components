@@ -67,6 +67,11 @@ export default declareComponent(PricingPlans, {
       defaultValue: "Talk to sales",
     }),
     enterpriseCtaHref: props.Link({ name: "Enterprise CTA link" }),
+    compareLinkLabel: props.Text({
+      name: "Compare link label",
+      defaultValue: "Compare all features ↓",
+    }),
+    compareLinkHref: props.Link({ name: "Compare link" }),
     emitJsonLd: props.Boolean({ name: "Emit JSON-LD", defaultValue: true }),
     productName: props.Text({
       name: "Product name (SEO)",

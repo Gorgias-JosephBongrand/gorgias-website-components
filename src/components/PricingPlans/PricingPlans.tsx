@@ -58,6 +58,10 @@ export interface PricingPlansProps {
   productName?: string;
   productUrl?: string;
 
+  /** Shared "Compare all features" link shown at the bottom of every card */
+  compareLinkLabel?: string;
+  compareLinkHref?: LinkValue;
+
   /** Text-hierarchy treatment passed to each card (prototype A/B) */
   hierarchy?: "v1" | "v2";
 }
@@ -94,6 +98,8 @@ export function PricingPlans({
   emitJsonLd = true,
   productName = "Gorgias",
   productUrl = "https://www.gorgias.com/pricing",
+  compareLinkLabel = "Compare all features ↓",
+  compareLinkHref,
   hierarchy = "v2",
 }: PricingPlansProps) {
   const [billing, setBilling] = useState<BillingCycle>(defaultBilling);
@@ -185,6 +191,8 @@ export function PricingPlans({
               {...computeCardProps(plan, billing, aiOn)}
               ctaLabel={cfg.label || plan.cta}
               ctaHref={{ href }}
+              compareLinkLabel={compareLinkLabel}
+              compareLinkHref={hrefOf(compareLinkHref) || "#compare"}
               hierarchy={hierarchy}
             />
           );
