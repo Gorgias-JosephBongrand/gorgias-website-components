@@ -27,21 +27,23 @@ export interface PricingPlansProps {
   annualLabel?: string;
   aiToggleLabel?: string;
 
-  // ── Per-plan CTA (label + link + baked automation rate) ──
-  // Links carry automationRate (0 when AI Agent is off) + planSelected,
-  // plus any incoming attribution params (ref, ref-position, …).
+  // ── Per-plan copy + CTA ──
+  starterAudience?: string;
   starterCtaLabel?: string;
   starterCtaHref?: LinkValue;
   starterAutomationRate?: number;
 
+  basicAudience?: string;
   basicCtaLabel?: string;
   basicCtaHref?: LinkValue;
   basicAutomationRate?: number;
 
+  proAudience?: string;
   proCtaLabel?: string;
   proCtaHref?: LinkValue;
   proAutomationRate?: number;
 
+  advancedAudience?: string;
   advancedCtaLabel?: string;
   advancedCtaHref?: LinkValue;
   advancedAutomationRate?: number;
@@ -74,18 +76,22 @@ export function PricingPlans({
   annualLabel = "Annual",
   aiToggleLabel = "Add AI Agent",
 
+  starterAudience = "For smaller brands getting started on one platform.",
   starterCtaLabel = "Start free trial",
   starterCtaHref,
   starterAutomationRate,
 
+  basicAudience = "For growing brands whose support volume is outpacing their team.",
   basicCtaLabel = "Start free trial",
   basicCtaHref,
   basicAutomationRate,
 
+  proAudience = "For scaling brands that let AI resolve and sell, with revenue analytics.",
   proCtaLabel = "Start free trial",
   proCtaHref,
   proAutomationRate,
 
+  advancedAudience = "For high-volume brands that need peak-ready automation and a dedicated team.",
   advancedCtaLabel = "Talk to sales",
   advancedCtaHref,
   advancedAutomationRate,
@@ -136,6 +142,13 @@ export function PricingPlans({
     basic: { label: basicCtaLabel, href: basicCtaHref, automationRate: basicAutomationRate },
     pro: { label: proCtaLabel, href: proCtaHref, automationRate: proAutomationRate },
     advanced: { label: advancedCtaLabel, href: advancedCtaHref, automationRate: advancedAutomationRate },
+  };
+
+  const audienceByKey: Record<string, string> = {
+    starter: starterAudience,
+    basic: basicAudience,
+    pro: proAudience,
+    advanced: advancedAudience,
   };
 
   const jsonLd = useMemo(
@@ -189,6 +202,7 @@ export function PricingPlans({
             <PricingCard
               key={plan.key}
               {...computeCardProps(plan, billing, aiOn)}
+              audience={audienceByKey[plan.key]}
               ctaLabel={cfg.label || plan.cta}
               ctaHref={{ href }}
               compareLinkLabel={compareLinkLabel}
