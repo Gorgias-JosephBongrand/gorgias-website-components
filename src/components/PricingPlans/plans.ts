@@ -140,7 +140,7 @@ export function computeCardProps(
   const aiResolvedLabel = aiActive ? `${fmtVol(plan.aiIncluded)} automated interactions` : "";
   const aiAgentDisplayValue = aiActive ? `${fmt(aiBase)}/mo` : "";
   const aiAgentNote = aiActive
-    ? "Then a per automated interaction fee past your limit."
+    ? "Then a $1.50 per automated interaction fee past your limit."
     : "Include AI Agent to start automating your support tickets.";
 
   const aiAgentTooltip = aiActive
@@ -148,7 +148,7 @@ export function computeCardProps(
     : "";
 
   // Helpdesk overage line, mirroring the AI Agent note for symmetry.
-  const helpdeskNote = "Then a per-ticket fee past your limit.";
+  const helpdeskNote = "Then a $1.50 per-ticket fee past your limit.";
 
   // The top banner is reserved for the featured promo only. Constraints and
   // reassurances live as supporting text below the CTA (designer feedback).

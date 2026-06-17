@@ -36,7 +36,7 @@ export default declareComponent(PricingCard, {
     helpdeskPrice: props.Text({ name: "Helpdesk price", defaultValue: "$50/mo" }),
     helpdeskNote: props.Text({
       name: "Helpdesk note",
-      defaultValue: "Then a per-ticket fee past your limit.",
+      defaultValue: "Then a $1.50 per-ticket fee past your limit.",
     }),
     aiResolvedLabel: props.Text({
       name: "AI interactions label",
@@ -49,7 +49,7 @@ export default declareComponent(PricingCard, {
     }),
     aiAgentNote: props.Text({
       name: "AI Agent note",
-      defaultValue: "Then a per automated interaction fee past your limit.",
+      defaultValue: "Then a $1.50 per automated interaction fee past your limit.",
     }),
     aiAgentTooltip: props.Text({
       name: "AI Agent tooltip",
