@@ -148,7 +148,7 @@ export function PricingCard({
   billingNote = "$924 billed annually",
   ticketLabel = "300 tickets / month",
   helpdeskPrice = "$50/mo",
-  helpdeskNote = "Then a $1.50 per-ticket fee past your limit.",
+  helpdeskNote = "Then a $0.40 per-ticket fee past your limit.",
   aiResolvedLabel = "30 automated interactions",
   showAiAgent = true,
   aiAgentDisplayValue = "$27/mo",

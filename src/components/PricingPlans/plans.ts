@@ -27,6 +27,8 @@ export interface Plan {
   cta: string;
   ctaVariant: "dark" | "ghost";
   ctaHref: string;
+  /** Per-ticket overage fee when monthly ticket limit is exceeded */
+  helpdeskOverage: number;
   /** Baked automation rate (%) applied when AI Agent is on; 0 when off. */
   automationRate: number;
   /** Starter: monthly billing only, no AI base */
@@ -47,6 +49,7 @@ export const DEFAULT_PLANS: Plan[] = [
     aiMonthly: 30,  // Tier 1: 30 interactions x $1.00
     aiIncluded: 30,
     tickets: "50 tickets / month",
+    helpdeskOverage: 0.40,
     cta: "Start free trial",
     ctaVariant: "ghost",
     ctaHref: "/signup",
@@ -63,6 +66,7 @@ export const DEFAULT_PLANS: Plan[] = [
     aiMonthly: 30,  // Tier 1: 30 interactions x $1.00
     aiIncluded: 30,
     tickets: "300 tickets / month",
+    helpdeskOverage: 0.40,
     cta: "Start free trial",
     ctaVariant: "ghost",
     ctaHref: "/signup",
@@ -78,6 +82,7 @@ export const DEFAULT_PLANS: Plan[] = [
     aiMonthly: 190, // Tier 9: 190 interactions x $1.00
     aiIncluded: 190,
     tickets: "2,000 tickets / month",
+    helpdeskOverage: 0.36,
     cta: "Start free trial",
     ctaVariant: "dark",
     ctaHref: "/signup",
@@ -95,6 +100,7 @@ export const DEFAULT_PLANS: Plan[] = [
     aiMonthly: 530, // Tier 16: 530 interactions x $1.00
     aiIncluded: 530,
     tickets: "5,000 tickets / month",
+    helpdeskOverage: 0.36,
     cta: "Talk to sales",
     ctaVariant: "ghost",
     ctaHref: "/demo",
@@ -148,7 +154,7 @@ export function computeCardProps(
     : "";
 
   // Helpdesk overage line, mirroring the AI Agent note for symmetry.
-  const helpdeskNote = "Then a $1.50 per-ticket fee past your limit.";
+  const helpdeskNote = `Then a $${plan.helpdeskOverage.toFixed(2)} per-ticket fee past your limit.`;
 
   // The top banner is reserved for the featured promo only. Constraints and
   // reassurances live as supporting text below the CTA (designer feedback).
