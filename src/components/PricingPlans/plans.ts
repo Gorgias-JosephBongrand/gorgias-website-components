@@ -140,7 +140,7 @@ export function computeCardProps(
   const aiResolvedLabel = aiActive ? `${fmtVol(plan.aiIncluded)} automated interactions` : "";
   const aiAgentDisplayValue = aiActive ? `${fmt(aiBase)}/mo` : "";
   const aiAgentNote = aiActive
-    ? `${aiRate} per automated interaction, then $1.50 over your tier.`
+    ? "Then a per automated interaction fee past your limit."
     : "Include AI Agent to start automating your support tickets.";
 
   const aiAgentTooltip = aiActive

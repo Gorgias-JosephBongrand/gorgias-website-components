@@ -152,7 +152,7 @@ export function PricingCard({
   aiResolvedLabel = "30 automated interactions",
   showAiAgent = true,
   aiAgentDisplayValue = "$27/mo",
-  aiAgentNote = "$0.90 per automated interaction, then $1.50 over your tier.",
+  aiAgentNote = "Then a per automated interaction fee past your limit.",
   aiAgentTooltip = "An automated interaction is when AI Agent fully resolves a ticket with no human in 72 hours, and also counts as one helpdesk ticket. This tier includes 30 at $0.90 each; beyond it, $1.50 per interaction.",
   ctaVariant = "dark",
   ctaLabel = "Start free trial",

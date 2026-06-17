@@ -49,7 +49,7 @@ export default declareComponent(PricingCard, {
     }),
     aiAgentNote: props.Text({
       name: "AI Agent note",
-      defaultValue: "$0.90 per automated interaction, then $1.50 over your tier.",
+      defaultValue: "Then a per automated interaction fee past your limit.",
     }),
     aiAgentTooltip: props.Text({
       name: "AI Agent tooltip",
